@@ -28,46 +28,96 @@
 
 class WStringTest : public ::testing::Test {
  protected:
-  constexpr static const wchar_t *SOURCE = L"hello world";
-  constexpr static const wchar_t *PREFIX = L"hello";
-  constexpr static const wchar_t *SUFFIX = L"world";
-  constexpr static const wchar_t *EMPTY = L"";
-  constexpr static const wchar_t *UPPERCASE = L"HELLO WORLD";
-  constexpr static const wchar_t *LOWERCASE = L"hello world";
+  static constexpr const wchar_t *EMPTY = L"";
+  static constexpr const wchar_t *hello_world = L"hello world";
+  static constexpr const wchar_t *HELLO_WORLD = L"HELLO WORLD";
+  static constexpr const wchar_t *HELLO = L"HELLO";
+  static constexpr const wchar_t *WORLD = L"WORLD";
+  static constexpr const wchar_t NULL_CHAR = L'\0';
+  static constexpr const wchar_t SPACE_CHAR = L' ';
 };
 
+constexpr const wchar_t *WStringTest::EMPTY;
+constexpr const wchar_t *WStringTest::hello_world;
+constexpr const wchar_t *WStringTest::HELLO_WORLD;
+constexpr const wchar_t *WStringTest::HELLO;
+constexpr const wchar_t *WStringTest::WORLD;
+constexpr const wchar_t WStringTest::NULL_CHAR;
+constexpr const wchar_t WStringTest::SPACE_CHAR;
+
+
 TEST_F(WStringTest, testStartsWithReturnTrueWhenValidInputGiven) {
-  EXPECT_TRUE(snap::string::startsWith(SOURCE, SOURCE));
-  EXPECT_TRUE(snap::string::startsWith(SOURCE, PREFIX));
-  EXPECT_TRUE(snap::string::startsWith(SOURCE, EMPTY));
+  EXPECT_TRUE(snap::string::startsWith(HELLO_WORLD, HELLO_WORLD));
+  EXPECT_TRUE(snap::string::startsWith(HELLO_WORLD, HELLO));
+  EXPECT_TRUE(snap::string::startsWith(HELLO_WORLD, EMPTY));
   EXPECT_TRUE(snap::string::startsWith(EMPTY, EMPTY));
 }
 
 TEST_F(WStringTest, testStartsWithReturnFalseWhenInvalidInputGiven) {
-  EXPECT_FALSE(snap::string::startsWith(SUFFIX, SOURCE));
-  EXPECT_FALSE(snap::string::startsWith(SOURCE, SUFFIX));
-  EXPECT_FALSE(snap::string::startsWith(EMPTY, SOURCE));
+  EXPECT_FALSE(snap::string::startsWith(WORLD, HELLO_WORLD));
+  EXPECT_FALSE(snap::string::startsWith(HELLO_WORLD, WORLD));
+  EXPECT_FALSE(snap::string::startsWith(EMPTY, HELLO_WORLD));
 }
 
 TEST_F(WStringTest, testEndsWithReturnTrueWhenValidInputGiven) {
-  EXPECT_TRUE(snap::string::endsWith(SOURCE, SOURCE));
-  EXPECT_TRUE(snap::string::endsWith(SOURCE, SUFFIX));
-  EXPECT_TRUE(snap::string::endsWith(SOURCE, EMPTY));
+  EXPECT_TRUE(snap::string::endsWith(HELLO_WORLD, HELLO_WORLD));
+  EXPECT_TRUE(snap::string::endsWith(HELLO_WORLD, WORLD));
+  EXPECT_TRUE(snap::string::endsWith(HELLO_WORLD, EMPTY));
   EXPECT_TRUE(snap::string::endsWith(EMPTY, EMPTY));
 }
 
 TEST_F(WStringTest, testEndsWithReturnFalseWhenInvalidInputGiven) {
-  EXPECT_FALSE(snap::string::endsWith(PREFIX, SOURCE));
-  EXPECT_FALSE(snap::string::endsWith(SOURCE, PREFIX));
-  EXPECT_FALSE(snap::string::endsWith(EMPTY, SOURCE));
+  EXPECT_FALSE(snap::string::endsWith(HELLO, HELLO_WORLD));
+  EXPECT_FALSE(snap::string::endsWith(HELLO_WORLD, HELLO));
+  EXPECT_FALSE(snap::string::endsWith(EMPTY, HELLO_WORLD));
 }
 
 TEST_F(WStringTest, testUppercaseReturnUppercasedInput) {
-  EXPECT_EQ(std::wstring(UPPERCASE), snap::string::uppercase(LOWERCASE));
-  EXPECT_EQ(std::wstring(UPPERCASE), snap::string::uppercase(UPPERCASE));
+  EXPECT_EQ(HELLO_WORLD, snap::string::uppercase(hello_world));
+  EXPECT_EQ(HELLO_WORLD, snap::string::uppercase(HELLO_WORLD));
 }
 
 TEST_F(WStringTest, testLowercaseReturnLowercasedInput) {
-  EXPECT_EQ(std::wstring(LOWERCASE), snap::string::lowercase(UPPERCASE));
-  EXPECT_EQ(std::wstring(LOWERCASE), snap::string::lowercase(LOWERCASE));
+  EXPECT_EQ(hello_world, snap::string::lowercase(HELLO_WORLD));
+  EXPECT_EQ(hello_world, snap::string::lowercase(hello_world));
+}
+
+TEST_F(WStringTest, testLstripRemovesLeadingWhitespaces) {
+  EXPECT_EQ(HELLO, snap::string::lstrip(HELLO));
+  EXPECT_EQ(HELLO, snap::string::lstrip(L"  \t\r HELLO"));
+  EXPECT_EQ(EMPTY, snap::string::lstrip(EMPTY));
+}
+
+TEST_F(WStringTest, testLstripWithCharRemovesTheLeadingChars) {
+  EXPECT_EQ(HELLO, snap::string::lstrip(L" HELLO", SPACE_CHAR));
+  EXPECT_EQ(HELLO, snap::string::lstrip(L"   HELLO", SPACE_CHAR));
+  EXPECT_EQ(HELLO, snap::string::lstrip(HELLO, SPACE_CHAR));
+  EXPECT_EQ(L" HELLO", snap::string::lstrip(L" HELLO", NULL_CHAR));
+}
+
+TEST_F(WStringTest, testRstripRemovesTrailingWhitespaces) {
+  EXPECT_EQ(HELLO, snap::string::rstrip(HELLO));
+  EXPECT_EQ(HELLO, snap::string::rstrip(L"HELLO  \r\t  "));
+  EXPECT_EQ(EMPTY, snap::string::rstrip(EMPTY));
+}
+
+TEST_F(WStringTest, testRstripWithCharRemovesTheTrailingChars) {
+  EXPECT_EQ(HELLO, snap::string::rstrip(L"HELLO ", SPACE_CHAR));
+  EXPECT_EQ(HELLO, snap::string::rstrip(L"HELLO   ", SPACE_CHAR));
+  EXPECT_EQ(HELLO, snap::string::rstrip(HELLO, SPACE_CHAR));
+  EXPECT_EQ(L"HELLO ", snap::string::rstrip(L"HELLO ", NULL_CHAR));
+}
+
+TEST_F(WStringTest, testStripRemovesLeadingAndTrailingSpaces) {
+  EXPECT_EQ(HELLO, snap::string::strip(HELLO));
+  EXPECT_EQ(HELLO, snap::string::strip(L"  HELLO  "));
+  EXPECT_EQ(EMPTY, snap::string::strip(EMPTY));
+}
+
+TEST_F(WStringTest, testStripWithCharsRemovesLeadingAndTrailingChars) {
+  EXPECT_EQ(HELLO, snap::string::strip(HELLO, SPACE_CHAR));
+  EXPECT_EQ(HELLO, snap::string::strip(L"  HELLO  ", SPACE_CHAR));
+  EXPECT_EQ(L" HELLO ", snap::string::strip(L" HELLO ", NULL_CHAR));
+  EXPECT_EQ(EMPTY, snap::string::strip(EMPTY, SPACE_CHAR));
+  EXPECT_EQ(EMPTY, snap::string::strip(EMPTY, NULL_CHAR));
 }

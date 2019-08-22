@@ -73,6 +73,90 @@ inline std::wstring lowercase(std::wstring s) {
   return s;
 }
 
+template <class UnaryPredicate>
+inline std::string lstrip(const std::string &s, UnaryPredicate pred) {
+  auto wsfront = std::find_if_not(s.begin(), s.end(), pred);
+  auto wsback = s.end();
+  return std::string(wsfront, wsback);
+}
+
+inline std::string lstrip(const std::string &s) {
+  return lstrip(s, ::isspace);
+}
+
+inline std::string lstrip(const std::string &s, char needle) {
+  return lstrip(s, [&](char c) {
+      return needle == c;
+    });
+}
+
+template <class UnaryPredicate>
+inline std::wstring lstrip(const std::wstring &s, UnaryPredicate pred) {
+  auto wsfront = std::find_if_not(s.begin(), s.end(), pred);
+  auto wsback = s.end();
+  return std::wstring(wsfront, wsback);
+}
+
+inline std::wstring lstrip(const std::wstring &s) {
+  return lstrip(s, ::isspace);
+}
+
+inline std::wstring lstrip(const std::wstring &s, wchar_t needle) {
+  return lstrip(s, [&](wchar_t c) {
+      return needle == c;
+    });
+}
+
+template <class UnaryPredicate>
+inline std::string rstrip(const std::string &s, UnaryPredicate pred) {
+  auto wsfront = s.begin();
+  auto wsback = std::find_if_not(s.rbegin(), s.rend(), pred).base();
+  return std::string(wsfront, wsback);
+}
+
+inline std::string rstrip(const std::string &s) {
+  return rstrip(s, ::isspace);
+}
+
+inline std::string rstrip(const std::string &s, char needle) {
+  return rstrip(s, [&](char c) {
+      return needle == c;
+    });
+}
+
+template <class UnaryPredicate>
+inline std::wstring rstrip(const std::wstring &s, UnaryPredicate pred) {
+  auto wsfront = s.begin();
+  auto wsback = std::find_if_not(s.rbegin(), s.rend(), pred).base();
+  return std::wstring(wsfront, wsback);
+}
+
+inline std::wstring rstrip(const std::wstring &s) {
+  return rstrip(s, ::isspace);
+}
+
+inline std::wstring rstrip(const std::wstring &s, wchar_t needle) {
+  return rstrip(s, [&](wchar_t c) {
+      return needle == c;
+    });
+}
+
+inline std::string strip(const std::string &s) {
+  return lstrip(rstrip(s));
+}
+
+inline std::string strip(const std::string &s, char needle) {
+  return lstrip(rstrip(s, needle), needle);
+}
+
+inline std::wstring strip(const std::wstring &s) {
+  return lstrip(rstrip(s));
+}
+
+inline std::wstring strip(const std::wstring &s, wchar_t needle) {
+  return lstrip(rstrip(s, needle), needle);
+}
+
 }  // namespace string
 
 }  // namespace snap
