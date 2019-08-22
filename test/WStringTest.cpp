@@ -26,48 +26,48 @@
 #include <string>
 #include "snap/string.hpp"
 
-class StringTest : public ::testing::Test {
+class WStringTest : public ::testing::Test {
  protected:
-  constexpr static const char *SOURCE = "hello world";
-  constexpr static const char *PREFIX = "hello";
-  constexpr static const char *SUFFIX = "world";
-  constexpr static const char *EMPTY = "";
-  constexpr static const char *UPPERCASE = "HELLO WORLD";
-  constexpr static const char *LOWERCASE = "hello world";
+  constexpr static const wchar_t *SOURCE = L"hello world";
+  constexpr static const wchar_t *PREFIX = L"hello";
+  constexpr static const wchar_t *SUFFIX = L"world";
+  constexpr static const wchar_t *EMPTY = L"";
+  constexpr static const wchar_t *UPPERCASE = L"HELLO WORLD";
+  constexpr static const wchar_t *LOWERCASE = L"hello world";
 };
 
-TEST_F(StringTest, testStartsWithReturnTrueWhenValidInputGiven) {
+TEST_F(WStringTest, testStartsWithReturnTrueWhenValidInputGiven) {
   EXPECT_TRUE(snap::string::startsWith(SOURCE, SOURCE));
   EXPECT_TRUE(snap::string::startsWith(SOURCE, PREFIX));
   EXPECT_TRUE(snap::string::startsWith(SOURCE, EMPTY));
   EXPECT_TRUE(snap::string::startsWith(EMPTY, EMPTY));
 }
 
-TEST_F(StringTest, testStartsWithReturnFalseWhenInvalidInputGiven) {
+TEST_F(WStringTest, testStartsWithReturnFalseWhenInvalidInputGiven) {
   EXPECT_FALSE(snap::string::startsWith(SUFFIX, SOURCE));
   EXPECT_FALSE(snap::string::startsWith(SOURCE, SUFFIX));
   EXPECT_FALSE(snap::string::startsWith(EMPTY, SOURCE));
 }
 
-TEST_F(StringTest, testEndsWithReturnTrueWhenValidInputGiven) {
+TEST_F(WStringTest, testEndsWithReturnTrueWhenValidInputGiven) {
   EXPECT_TRUE(snap::string::endsWith(SOURCE, SOURCE));
   EXPECT_TRUE(snap::string::endsWith(SOURCE, SUFFIX));
   EXPECT_TRUE(snap::string::endsWith(SOURCE, EMPTY));
   EXPECT_TRUE(snap::string::endsWith(EMPTY, EMPTY));
 }
 
-TEST_F(StringTest, testEndsWithReturnFalseWhenInvalidInputGiven) {
+TEST_F(WStringTest, testEndsWithReturnFalseWhenInvalidInputGiven) {
   EXPECT_FALSE(snap::string::endsWith(PREFIX, SOURCE));
   EXPECT_FALSE(snap::string::endsWith(SOURCE, PREFIX));
   EXPECT_FALSE(snap::string::endsWith(EMPTY, SOURCE));
 }
 
-TEST_F(StringTest, testUppercaseReturnUppercasedInput) {
-  EXPECT_EQ(std::string(UPPERCASE), snap::string::uppercase(LOWERCASE));
-  EXPECT_EQ(std::string(UPPERCASE), snap::string::uppercase(UPPERCASE));
+TEST_F(WStringTest, testUppercaseReturnUppercasedInput) {
+  EXPECT_EQ(std::wstring(UPPERCASE), snap::string::uppercase(LOWERCASE));
+  EXPECT_EQ(std::wstring(UPPERCASE), snap::string::uppercase(UPPERCASE));
 }
 
-TEST_F(StringTest, testLowercaseReturnLowercasedInput) {
-  EXPECT_EQ(std::string(LOWERCASE), snap::string::lowercase(UPPERCASE));
-  EXPECT_EQ(std::string(LOWERCASE), snap::string::lowercase(LOWERCASE));
+TEST_F(WStringTest, testLowercaseReturnLowercasedInput) {
+  EXPECT_EQ(std::wstring(LOWERCASE), snap::string::lowercase(UPPERCASE));
+  EXPECT_EQ(std::wstring(LOWERCASE), snap::string::lowercase(LOWERCASE));
 }

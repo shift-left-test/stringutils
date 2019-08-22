@@ -25,6 +25,7 @@
 #ifndef INCLUDE_SNAP_STRING_HPP_
 #define INCLUDE_SNAP_STRING_HPP_
 
+#include <cctype>
 #include <algorithm>
 #include <string>
 
@@ -50,6 +51,26 @@ inline bool endsWith(const std::string &haystack,
 inline bool endsWith(const std::wstring &haystack,
                      const std::wstring &needle) {
   return std::equal(needle.rbegin(), needle.rend(), haystack.rbegin());
+}
+
+inline std::string uppercase(std::string s) {
+  std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+  return s;
+}
+
+inline std::wstring uppercase(std::wstring s) {
+  std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+  return s;
+}
+
+inline std::string lowercase(std::string s) {
+  std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+  return s;
+}
+
+inline std::wstring lowercase(std::wstring s) {
+  std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+  return s;
 }
 
 }  // namespace string

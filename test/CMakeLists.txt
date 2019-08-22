@@ -1,6 +1,6 @@
 build_test_program(
   NAME unittest
   SUFFIX .bin
-  SRCS StringTest.cpp
+  SRCS StringTest.cpp WStringTest.cpp
   PRIVATE_HEADERS ${CMAKE_SOURCE_DIR}/include
 )
