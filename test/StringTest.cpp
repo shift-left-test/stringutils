@@ -23,6 +23,7 @@
 */
 
 #include <gtest/gtest.h>
+#include <cctype>
 #include <string>
 #include "snap/string.hpp"
 
@@ -70,6 +71,11 @@ TEST_F(StringTest, testEndsWithReturnFalseWhenInvalidInputGiven) {
   EXPECT_FALSE(snap::string::endsWith(HELLO, HELLO_WORLD));
   EXPECT_FALSE(snap::string::endsWith(HELLO_WORLD, HELLO));
   EXPECT_FALSE(snap::string::endsWith(EMPTY, HELLO_WORLD));
+}
+
+TEST_F(StringTest, testTransformReturnsConvertedString) {
+  EXPECT_EQ(HELLO_WORLD, snap::string::transform(hello_world, ::toupper));
+  EXPECT_EQ(HELLO_WORLD, snap::string::transform(HELLO_WORLD, ::toupper));
 }
 
 TEST_F(StringTest, testUppercaseReturnUppercasedInput) {

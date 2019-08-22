@@ -53,24 +53,32 @@ inline bool endsWith(const std::wstring &haystack,
   return std::equal(needle.rbegin(), needle.rend(), haystack.rbegin());
 }
 
-inline std::string uppercase(std::string s) {
-  std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+template <class UnaryPredicate>
+inline std::string transform(std::string s, UnaryPredicate pred) {
+  std::transform(s.begin(), s.end(), s.begin(), pred);
   return s;
 }
 
-inline std::wstring uppercase(std::wstring s) {
-  std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+template <class UnaryPredicate>
+inline std::wstring transform(std::wstring s, UnaryPredicate pred) {
+  std::transform(s.begin(), s.end(), s.begin(), pred);
   return s;
 }
 
-inline std::string lowercase(std::string s) {
-  std::transform(s.begin(), s.end(), s.begin(), ::tolower);
-  return s;
+inline std::string uppercase(const std::string &s) {
+  return transform(s, ::toupper);
 }
 
-inline std::wstring lowercase(std::wstring s) {
-  std::transform(s.begin(), s.end(), s.begin(), ::tolower);
-  return s;
+inline std::wstring uppercase(const std::wstring &s) {
+  return transform(s, ::toupper);
+}
+
+inline std::string lowercase(const std::string &s) {
+  return transform(s, ::tolower);
+}
+
+inline std::wstring lowercase(const std::wstring &s) {
+  return transform(s, ::tolower);
 }
 
 template <class UnaryPredicate>
