@@ -33,7 +33,9 @@ class StringTest : public ::testing::Test {
   static constexpr const char *hello_world = "hello world";
   static constexpr const char *HELLO_WORLD = "HELLO WORLD";
   static constexpr const char *HELLO = "HELLO";
+  static constexpr const char *SPACE = " ";
   static constexpr const char *WORLD = "WORLD";
+  static constexpr const char *QUESTION = "?";
   static constexpr const char NULL_CHAR = '\0';
   static constexpr const char SPACE_CHAR = ' ';
 };
@@ -126,4 +128,19 @@ TEST_F(StringTest, testStripWithCharsRemovesLeadingAndTrailingChars) {
   EXPECT_EQ(" HELLO ", snap::string::strip(" HELLO ", NULL_CHAR));
   EXPECT_EQ(EMPTY, snap::string::strip(EMPTY, SPACE_CHAR));
   EXPECT_EQ(EMPTY, snap::string::strip(EMPTY, NULL_CHAR));
+}
+
+TEST_F(StringTest, testContainsReturnTrueOnValidConditions) {
+  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, HELLO_WORLD));
+  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, HELLO));
+  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, WORLD));
+  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, SPACE));
+  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, EMPTY));
+}
+
+TEST_F(StringTest, testContainsReturnFalseOnInvalidConditions) {
+  EXPECT_FALSE(snap::string::contains(HELLO_WORLD, hello_world));
+  EXPECT_FALSE(snap::string::contains(HELLO, HELLO_WORLD));
+  EXPECT_FALSE(snap::string::contains(HELLO, WORLD));
+  EXPECT_FALSE(snap::string::contains(HELLO, QUESTION));
 }

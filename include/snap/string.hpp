@@ -92,9 +92,9 @@ inline std::string lstrip(const std::string &s) {
   return lstrip(s, ::isspace);
 }
 
-inline std::string lstrip(const std::string &s, char needle) {
+inline std::string lstrip(const std::string &s, char ch) {
   return lstrip(s, [&](char c) {
-      return needle == c;
+      return ch == c;
     });
 }
 
@@ -109,9 +109,9 @@ inline std::wstring lstrip(const std::wstring &s) {
   return lstrip(s, ::isspace);
 }
 
-inline std::wstring lstrip(const std::wstring &s, wchar_t needle) {
+inline std::wstring lstrip(const std::wstring &s, wchar_t ch) {
   return lstrip(s, [&](wchar_t c) {
-      return needle == c;
+      return ch == c;
     });
 }
 
@@ -126,9 +126,9 @@ inline std::string rstrip(const std::string &s) {
   return rstrip(s, ::isspace);
 }
 
-inline std::string rstrip(const std::string &s, char needle) {
+inline std::string rstrip(const std::string &s, char ch) {
   return rstrip(s, [&](char c) {
-      return needle == c;
+      return ch == c;
     });
 }
 
@@ -143,9 +143,9 @@ inline std::wstring rstrip(const std::wstring &s) {
   return rstrip(s, ::isspace);
 }
 
-inline std::wstring rstrip(const std::wstring &s, wchar_t needle) {
+inline std::wstring rstrip(const std::wstring &s, wchar_t ch) {
   return rstrip(s, [&](wchar_t c) {
-      return needle == c;
+      return ch == c;
     });
 }
 
@@ -153,16 +153,24 @@ inline std::string strip(const std::string &s) {
   return lstrip(rstrip(s));
 }
 
-inline std::string strip(const std::string &s, char needle) {
-  return lstrip(rstrip(s, needle), needle);
+inline std::string strip(const std::string &s, char ch) {
+  return lstrip(rstrip(s, ch), ch);
 }
 
 inline std::wstring strip(const std::wstring &s) {
   return lstrip(rstrip(s));
 }
 
-inline std::wstring strip(const std::wstring &s, wchar_t needle) {
-  return lstrip(rstrip(s, needle), needle);
+inline std::wstring strip(const std::wstring &s, wchar_t ch) {
+  return lstrip(rstrip(s, ch), ch);
+}
+
+inline bool contains(const std::string &haystack, const std::string &needle) {
+  return haystack.find(needle) != std::string::npos;
+}
+
+inline bool contains(const std::wstring &haystack, const std::wstring &needle) {
+  return haystack.find(needle) != std::string::npos;
 }
 
 }  // namespace string

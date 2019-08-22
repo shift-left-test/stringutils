@@ -33,7 +33,9 @@ class WStringTest : public ::testing::Test {
   static constexpr const wchar_t *hello_world = L"hello world";
   static constexpr const wchar_t *HELLO_WORLD = L"HELLO WORLD";
   static constexpr const wchar_t *HELLO = L"HELLO";
+  static constexpr const wchar_t *SPACE = L" ";
   static constexpr const wchar_t *WORLD = L"WORLD";
+  static constexpr const wchar_t *QUESTION = L"?";
   static constexpr const wchar_t NULL_CHAR = L'\0';
   static constexpr const wchar_t SPACE_CHAR = L' ';
 };
@@ -126,4 +128,19 @@ TEST_F(WStringTest, testStripWithCharsRemovesLeadingAndTrailingChars) {
   EXPECT_EQ(L" HELLO ", snap::string::strip(L" HELLO ", NULL_CHAR));
   EXPECT_EQ(EMPTY, snap::string::strip(EMPTY, SPACE_CHAR));
   EXPECT_EQ(EMPTY, snap::string::strip(EMPTY, NULL_CHAR));
+}
+
+TEST_F(WStringTest, testContainsReturnTrueOnValidConditions) {
+  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, HELLO_WORLD));
+  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, HELLO));
+  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, WORLD));
+  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, SPACE));
+  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, EMPTY));
+}
+
+TEST_F(WStringTest, testContainsReturnFalseOnInvalidConditions) {
+  EXPECT_FALSE(snap::string::contains(HELLO_WORLD, hello_world));
+  EXPECT_FALSE(snap::string::contains(HELLO, HELLO_WORLD));
+  EXPECT_FALSE(snap::string::contains(HELLO, WORLD));
+  EXPECT_FALSE(snap::string::contains(HELLO, QUESTION));
 }
