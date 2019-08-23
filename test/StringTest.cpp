@@ -29,118 +29,614 @@
 
 class StringTest : public ::testing::Test {
  protected:
-  static constexpr const char *EMPTY = "";
-  static constexpr const char *hello_world = "hello world";
-  static constexpr const char *HELLO_WORLD = "HELLO WORLD";
-  static constexpr const char *HELLO = "HELLO";
-  static constexpr const char *SPACE = " ";
-  static constexpr const char *WORLD = "WORLD";
-  static constexpr const char *QUESTION = "?";
-  static constexpr const char NULL_CHAR = '\0';
-  static constexpr const char SPACE_CHAR = ' ';
+  template <typename T>
+  void checkStartsWith(const std::basic_string<T> &text,
+                       const T *prefix,
+                       const T *suffix,
+                       const std::basic_string<T> &blank) {
+    EXPECT_TRUE(snap::string::startsWith(text, text));
+    EXPECT_TRUE(snap::string::startsWith(text, prefix));
+    EXPECT_TRUE(snap::string::startsWith(text, blank));
+    EXPECT_TRUE(snap::string::startsWith(blank, blank));
+    EXPECT_FALSE(snap::string::startsWith(prefix, text));
+    EXPECT_FALSE(snap::string::startsWith(text, suffix));
+    EXPECT_FALSE(snap::string::startsWith(blank, text));
+  }
+
+  template <typename T>
+  void checkEndsWith(const std::basic_string<T> &text,
+                     const T *prefix,
+                     const T *suffix,
+                     const std::basic_string<T> &blank) {
+    EXPECT_TRUE(snap::string::endsWith(text, text));
+    EXPECT_TRUE(snap::string::endsWith(text, suffix));
+    EXPECT_TRUE(snap::string::endsWith(text, blank));
+    EXPECT_TRUE(snap::string::endsWith(blank, blank));
+    EXPECT_FALSE(snap::string::endsWith(prefix, text));
+    EXPECT_FALSE(snap::string::endsWith(text, prefix));
+    EXPECT_FALSE(snap::string::endsWith(blank, text));
+  }
+
+  template <typename T>
+  void checkTransform(const std::basic_string<T> &uppercase,
+                      const T *lowercase) {
+    EXPECT_EQ(uppercase, snap::string::transform(uppercase, ::toupper));
+    EXPECT_EQ(uppercase, snap::string::transform(lowercase, ::toupper));
+  }
+
+  template <typename T>
+  void checkUppercase(const std::basic_string<T> &uppercase,
+                      const T *lowercase,
+                      const T *blank) {
+    EXPECT_EQ(uppercase, snap::string::uppercase(uppercase));
+    EXPECT_EQ(uppercase, snap::string::uppercase(lowercase));
+    EXPECT_EQ(blank, snap::string::uppercase(blank));
+  }
+
+  template <typename T>
+  void checkLowercase(const std::basic_string<T> &uppercase,
+                      const T *lowercase,
+                      const T *blank) {
+    EXPECT_EQ(lowercase, snap::string::lowercase(uppercase));
+    EXPECT_EQ(lowercase, snap::string::lowercase(lowercase));
+    EXPECT_EQ(blank, snap::string::lowercase(blank));
+  }
+
+  template <typename T>
+  void checkLstrip(const std::basic_string<T> &rawText,
+                   const T *text,
+                   const T *space,
+                   const std::basic_string<T> &blank) {
+    EXPECT_EQ(text, snap::string::lstrip(rawText));
+    EXPECT_EQ(text, snap::string::lstrip(text));
+    EXPECT_EQ(blank, snap::string::lstrip(space));
+    EXPECT_EQ(blank, snap::string::lstrip(blank));
+  }
+
+  template <typename T>
+  void checkLstripWithChar(const std::basic_string<T> &rawText,
+                           const T *text,
+                           const T space,
+                           const T blank) {
+    EXPECT_EQ(text, snap::string::lstrip(rawText, space));
+    EXPECT_EQ(text, snap::string::lstrip(text, space));
+    EXPECT_EQ(rawText, snap::string::lstrip(rawText, blank));
+  }
+
+  template <typename T>
+  void checkRstrip(const std::basic_string<T> &rawText,
+                   const T *text,
+                   const T *space,
+                   const std::basic_string<T> &blank) {
+    EXPECT_EQ(text, snap::string::rstrip(rawText));
+    EXPECT_EQ(text, snap::string::rstrip(text));
+    EXPECT_EQ(blank, snap::string::rstrip(space));
+    EXPECT_EQ(blank, snap::string::rstrip(blank));
+  }
+
+  template <typename T>
+  void checkRstripWithChar(const std::basic_string<T> &rawText,
+                           const T *text,
+                           const T space,
+                           const T blank) {
+    EXPECT_EQ(text, snap::string::rstrip(rawText, space));
+    EXPECT_EQ(text, snap::string::rstrip(text, space));
+    EXPECT_EQ(rawText, snap::string::rstrip(rawText, blank));
+  }
+
+  template <typename T>
+  void checkStrip(const std::basic_string<T> &rawText,
+                  const T *text,
+                  const T *space,
+                  const std::basic_string<T> &blank) {
+    EXPECT_EQ(text, snap::string::strip(rawText));
+    EXPECT_EQ(text, snap::string::strip(text));
+    EXPECT_EQ(blank, snap::string::strip(space));
+    EXPECT_EQ(blank, snap::string::strip(blank));
+  }
+
+  template <typename T>
+  void checkStripWithChar(const std::basic_string<T> &rawText,
+                          const T *text,
+                          const T space,
+                          const T blank) {
+    EXPECT_EQ(text, snap::string::strip(rawText, space));
+    EXPECT_EQ(text, snap::string::strip(text, space));
+    EXPECT_EQ(rawText, snap::string::strip(rawText, blank));
+  }
+
+  template <typename T>
+  void checkContains(const std::basic_string<T> &text,
+                     const std::basic_string<T> &capitalized,
+                     const T *prefix,
+                     const T *suffix,
+                     const T *space,
+                     const T *blank,
+                     const T *weird) {
+    EXPECT_TRUE(snap::string::contains(text, text));
+    EXPECT_TRUE(snap::string::contains(text, prefix));
+    EXPECT_TRUE(snap::string::contains(text, suffix));
+    EXPECT_TRUE(snap::string::contains(text, blank));
+    EXPECT_FALSE(snap::string::contains(text, capitalized));
+    EXPECT_FALSE(snap::string::contains(prefix, text));
+    EXPECT_FALSE(snap::string::contains(suffix, text));
+    EXPECT_FALSE(snap::string::contains(prefix, suffix));
+    EXPECT_FALSE(snap::string::contains(text, weird));
+  }
 };
 
-constexpr const char *StringTest::EMPTY;
-constexpr const char *StringTest::hello_world;
-constexpr const char *StringTest::HELLO_WORLD;
-constexpr const char *StringTest::HELLO;
-constexpr const char *StringTest::WORLD;
-constexpr const char StringTest::NULL_CHAR;
-constexpr const char StringTest::SPACE_CHAR;
 
-
-TEST_F(StringTest, testStartsWithReturnTrueWhenValidInputGiven) {
-  EXPECT_TRUE(snap::string::startsWith(HELLO_WORLD, HELLO_WORLD));
-  EXPECT_TRUE(snap::string::startsWith(HELLO_WORLD, HELLO));
-  EXPECT_TRUE(snap::string::startsWith(HELLO_WORLD, EMPTY));
-  EXPECT_TRUE(snap::string::startsWith(EMPTY, EMPTY));
+TEST_F(StringTest, testStartsWithForString) {
+  const std::string TEXT = "hello world";
+  const char *PREFIX = "hello";
+  const char *SUFFIX = "world";
+  const std::string BLANK = "";
+  checkStartsWith(TEXT, PREFIX, SUFFIX, BLANK);
 }
 
-TEST_F(StringTest, testStartsWithReturnFalseWhenInvalidInputGiven) {
-  EXPECT_FALSE(snap::string::startsWith(WORLD, HELLO_WORLD));
-  EXPECT_FALSE(snap::string::startsWith(HELLO_WORLD, WORLD));
-  EXPECT_FALSE(snap::string::startsWith(EMPTY, HELLO_WORLD));
+TEST_F(StringTest, testStartsWithForU8String) {
+  const std::string TEXT = u8"hello world";
+  const char *PREFIX = u8"hello";
+  const char *SUFFIX = u8"world";
+  const std::string BLANK = u8"";
+  checkStartsWith(TEXT, PREFIX, SUFFIX, BLANK);
 }
 
-TEST_F(StringTest, testEndsWithReturnTrueWhenValidInputGiven) {
-  EXPECT_TRUE(snap::string::endsWith(HELLO_WORLD, HELLO_WORLD));
-  EXPECT_TRUE(snap::string::endsWith(HELLO_WORLD, WORLD));
-  EXPECT_TRUE(snap::string::endsWith(HELLO_WORLD, EMPTY));
-  EXPECT_TRUE(snap::string::endsWith(EMPTY, EMPTY));
+TEST_F(StringTest, testStartsWithForWString) {
+  const std::wstring TEXT = L"hello world";
+  const wchar_t *PREFIX = L"hello";
+  const wchar_t *SUFFIX = L"world";
+  const std::wstring BLANK = L"";
+  checkStartsWith(TEXT, PREFIX, SUFFIX, BLANK);
 }
 
-TEST_F(StringTest, testEndsWithReturnFalseWhenInvalidInputGiven) {
-  EXPECT_FALSE(snap::string::endsWith(HELLO, HELLO_WORLD));
-  EXPECT_FALSE(snap::string::endsWith(HELLO_WORLD, HELLO));
-  EXPECT_FALSE(snap::string::endsWith(EMPTY, HELLO_WORLD));
+TEST_F(StringTest, testStartsWithForU16String) {
+  const std::u16string TEXT = u"hello world";
+  const char16_t *PREFIX = u"hello";
+  const char16_t *SUFFIX = u"world";
+  const std::u16string BLANK = u"";
+  checkStartsWith(TEXT, PREFIX, SUFFIX, BLANK);
 }
 
-TEST_F(StringTest, testTransformReturnsConvertedString) {
-  EXPECT_EQ(HELLO_WORLD, snap::string::transform(hello_world, ::toupper));
-  EXPECT_EQ(HELLO_WORLD, snap::string::transform(HELLO_WORLD, ::toupper));
+TEST_F(StringTest, testStartsWithForU32String) {
+  const std::u32string TEXT = U"hello world";
+  const char32_t *PREFIX = U"hello";
+  const char32_t *SUFFIX = U"world";
+  const std::u32string BLANK = U"";
+  checkStartsWith(TEXT, PREFIX, SUFFIX, BLANK);
 }
 
-TEST_F(StringTest, testUppercaseReturnUppercasedInput) {
-  EXPECT_EQ(HELLO_WORLD, snap::string::uppercase(hello_world));
-  EXPECT_EQ(HELLO_WORLD, snap::string::uppercase(HELLO_WORLD));
+TEST_F(StringTest, testEndsWithForString) {
+  const std::string TEXT = "hello world";
+  const char *PREFIX = "hello";
+  const char *SUFFIX = "world";
+  const std::string BLANK = "";
+  checkEndsWith(TEXT, PREFIX, SUFFIX, BLANK);
 }
 
-TEST_F(StringTest, testLowercaseReturnLowercasedInput) {
-  EXPECT_EQ(hello_world, snap::string::lowercase(HELLO_WORLD));
-  EXPECT_EQ(hello_world, snap::string::lowercase(hello_world));
+TEST_F(StringTest, testEndsWithForU8String) {
+  const std::string TEXT = u8"hello world";
+  const char *PREFIX = u8"hello";
+  const char *SUFFIX = u8"world";
+  const std::string BLANK = u8"";
+  checkEndsWith(TEXT, PREFIX, SUFFIX, BLANK);
 }
 
-TEST_F(StringTest, testLstripRemovesLeadingWhitespaces) {
-  EXPECT_EQ(HELLO, snap::string::lstrip(HELLO));
-  EXPECT_EQ(HELLO, snap::string::lstrip("  \t\r HELLO"));
-  EXPECT_EQ(EMPTY, snap::string::lstrip(EMPTY));
+TEST_F(StringTest, testEndsWithForWString) {
+  const std::wstring TEXT = L"hello world";
+  const wchar_t *PREFIX = L"hello";
+  const wchar_t *SUFFIX = L"world";
+  const std::wstring BLANK = L"";
+  checkEndsWith(TEXT, PREFIX, SUFFIX, BLANK);
 }
 
-TEST_F(StringTest, testLstripWithCharRemovesTheLeadingChars) {
-  EXPECT_EQ(HELLO, snap::string::lstrip(" HELLO", SPACE_CHAR));
-  EXPECT_EQ(HELLO, snap::string::lstrip("   HELLO", SPACE_CHAR));
-  EXPECT_EQ(HELLO, snap::string::lstrip(HELLO, SPACE_CHAR));
-  EXPECT_EQ(" HELLO", snap::string::lstrip(" HELLO", NULL_CHAR));
+TEST_F(StringTest, testEndsWithForU16String) {
+  const std::u16string TEXT = u"hello world";
+  const char16_t *PREFIX = u"hello";
+  const char16_t *SUFFIX = u"world";
+  const std::u16string BLANK = u"";
+  checkEndsWith(TEXT, PREFIX, SUFFIX, BLANK);
 }
 
-TEST_F(StringTest, testRstripRemovesTrailingWhitespaces) {
-  EXPECT_EQ(HELLO, snap::string::rstrip(HELLO));
-  EXPECT_EQ(HELLO, snap::string::rstrip("HELLO  \r\t  "));
-  EXPECT_EQ(EMPTY, snap::string::rstrip(EMPTY));
+TEST_F(StringTest, testEndsWithForU32String) {
+  const std::u32string TEXT = U"hello world";
+  const char32_t *PREFIX = U"hello";
+  const char32_t *SUFFIX = U"world";
+  const std::u32string BLANK = U"";
+  checkEndsWith(TEXT, PREFIX, SUFFIX, BLANK);
 }
 
-TEST_F(StringTest, testRstripWithCharRemovesTheTrailingChars) {
-  EXPECT_EQ(HELLO, snap::string::rstrip("HELLO ", SPACE_CHAR));
-  EXPECT_EQ(HELLO, snap::string::rstrip("HELLO   ", SPACE_CHAR));
-  EXPECT_EQ(HELLO, snap::string::rstrip(HELLO, SPACE_CHAR));
-  EXPECT_EQ("HELLO ", snap::string::rstrip("HELLO ", NULL_CHAR));
+TEST_F(StringTest, testTransformForString) {
+  const std::string UPPERCASE = "HELLO WORLD";
+  const char *LOWERCASE = "hello world";
+  checkTransform(UPPERCASE, LOWERCASE);
 }
 
-TEST_F(StringTest, testStripRemovesLeadingAndTrailingSpaces) {
-  EXPECT_EQ(HELLO, snap::string::strip(HELLO));
-  EXPECT_EQ(HELLO, snap::string::strip("  HELLO  "));
-  EXPECT_EQ(EMPTY, snap::string::strip(EMPTY));
+TEST_F(StringTest, testTransformForU8String) {
+  const std::string UPPERCASE = u8"HELLO WORLD";
+  const char *LOWERCASE = u8"hello world";
+  checkTransform(UPPERCASE, LOWERCASE);
 }
 
-TEST_F(StringTest, testStripWithCharsRemovesLeadingAndTrailingChars) {
-  EXPECT_EQ(HELLO, snap::string::strip(HELLO, SPACE_CHAR));
-  EXPECT_EQ(HELLO, snap::string::strip("  HELLO  ", SPACE_CHAR));
-  EXPECT_EQ(" HELLO ", snap::string::strip(" HELLO ", NULL_CHAR));
-  EXPECT_EQ(EMPTY, snap::string::strip(EMPTY, SPACE_CHAR));
-  EXPECT_EQ(EMPTY, snap::string::strip(EMPTY, NULL_CHAR));
+TEST_F(StringTest, testTransformForWString) {
+  const std::wstring UPPERCASE = L"HELLO WORLD";
+  const wchar_t *LOWERCASE = L"hello world";
+  checkTransform(UPPERCASE, LOWERCASE);
 }
 
-TEST_F(StringTest, testContainsReturnTrueOnValidConditions) {
-  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, HELLO_WORLD));
-  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, HELLO));
-  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, WORLD));
-  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, SPACE));
-  EXPECT_TRUE(snap::string::contains(HELLO_WORLD, EMPTY));
+TEST_F(StringTest, testTransformForU16String) {
+  const std::u16string UPPERCASE = u"HELLO WORLD";
+  const char16_t *LOWERCASE = u"hello world";
+  checkTransform(UPPERCASE, LOWERCASE);
 }
 
-TEST_F(StringTest, testContainsReturnFalseOnInvalidConditions) {
-  EXPECT_FALSE(snap::string::contains(HELLO_WORLD, hello_world));
-  EXPECT_FALSE(snap::string::contains(HELLO, HELLO_WORLD));
-  EXPECT_FALSE(snap::string::contains(HELLO, WORLD));
-  EXPECT_FALSE(snap::string::contains(HELLO, QUESTION));
+TEST_F(StringTest, testTransformForU32String) {
+  const std::u32string UPPERCASE = U"HELLO WORLD";
+  const char32_t *LOWERCASE = U"hello world";
+  checkTransform(UPPERCASE, LOWERCASE);
+}
+
+TEST_F(StringTest, testUppercaseForString) {
+  const std::string UPPERCASE = "HELLO WORLD";
+  const char *LOWERCASE = "hello world";
+  const char *BLANK = "";
+  checkUppercase(UPPERCASE, LOWERCASE, BLANK);
+}
+
+TEST_F(StringTest, testUppercaseForU8String) {
+  const std::string UPPERCASE = u8"HELLO WORLD";
+  const char *LOWERCASE = u8"hello world";
+  const char *BLANK = u8"";
+  checkUppercase(UPPERCASE, LOWERCASE, BLANK);
+}
+
+TEST_F(StringTest, testUppercaseForWString) {
+  const std::wstring UPPERCASE = L"HELLO WORLD";
+  const wchar_t *LOWERCASE = L"hello world";
+  const wchar_t *BLANK = L"";
+  checkUppercase(UPPERCASE, LOWERCASE, BLANK);
+}
+
+TEST_F(StringTest, testUppercaseForU16String) {
+  const std::u16string UPPERCASE = u"HELLO WORLD";
+  const char16_t *LOWERCASE = u"hello world";
+  const char16_t *BLANK = u"";
+  checkUppercase(UPPERCASE, LOWERCASE, BLANK);
+}
+
+TEST_F(StringTest, testUppercaseForU32String) {
+  const std::u32string UPPERCASE = U"HELLO WORLD";
+  const char32_t *LOWERCASE = U"hello world";
+  const char32_t *BLANK = U"";
+  checkUppercase(UPPERCASE, LOWERCASE, BLANK);
+}
+
+TEST_F(StringTest, testLowercaseForString) {
+  const std::string UPPERCASE = "HELLO WORLD";
+  const char *LOWERCASE = "hello world";
+  const char *BLANK = "";
+  checkLowercase(UPPERCASE, LOWERCASE, BLANK);
+}
+
+TEST_F(StringTest, testLowercaseForU8String) {
+  const std::string UPPERCASE = u8"HELLO WORLD";
+  const char *LOWERCASE = u8"hello world";
+  const char *BLANK = u8"";
+  checkLowercase(UPPERCASE, LOWERCASE, BLANK);
+}
+
+TEST_F(StringTest, testLowercaseForWString) {
+  const std::wstring UPPERCASE = L"HELLO WORLD";
+  const wchar_t *LOWERCASE = L"hello world";
+  const wchar_t *BLANK = L"";
+  checkLowercase(UPPERCASE, LOWERCASE, BLANK);
+}
+
+TEST_F(StringTest, testLowercaseForU16String) {
+  const std::u16string UPPERCASE = u"HELLO WORLD";
+  const char16_t *LOWERCASE = u"hello world";
+  const char16_t *BLANK = u"";
+  checkLowercase(UPPERCASE, LOWERCASE, BLANK);
+}
+
+TEST_F(StringTest, testLowercaseForU32String) {
+  const std::u32string UPPERCASE = U"HELLO WORLD";
+  const char32_t *LOWERCASE = U"hello world";
+  const char32_t *BLANK = U"";
+  checkLowercase(UPPERCASE, LOWERCASE, BLANK);
+}
+
+TEST_F(StringTest, testLstripForString) {
+  const std::string RAW_TEXT = " \t\r hello";
+  const char *TEXT = "hello";
+  const char *SPACE = " ";
+  const std::string BLANK = "";
+  checkLstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testLstripForU8String) {
+  const std::string RAW_TEXT = u8" \t\r hello";
+  const char *TEXT = u8"hello";
+  const char *SPACE = u8" ";
+  const std::string BLANK = u8"";
+  checkLstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testLstripForWString) {
+  const std::wstring RAW_TEXT = L" \t\r hello";
+  const wchar_t *TEXT = L"hello";
+  const wchar_t *SPACE = L" ";
+  const std::wstring BLANK = L"";
+  checkLstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testLstripForU16String) {
+  const std::u16string RAW_TEXT = u" \t\r hello";
+  const char16_t *TEXT = u"hello";
+  const char16_t *SPACE = u" ";
+  const std::u16string BLANK = u"";
+  checkLstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testLstripForU32String) {
+  const std::u32string RAW_TEXT = U" \t\r hello";
+  const char32_t *TEXT = U"hello";
+  const char32_t *SPACE = U" ";
+  const std::u32string BLANK = U"";
+  checkLstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testLstripWithCharForString) {
+  const std::string RAW_TEXT = "  hello";
+  const char *TEXT = "hello";
+  const char SPACE = ' ';
+  const char BLANK = '\0';
+  checkLstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testLstripWithCharForU8String) {
+  const std::string RAW_TEXT = u8"  hello";
+  const char *TEXT = u8"hello";
+  const char SPACE = ' ';
+  const char BLANK = '\0';
+  checkLstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testLstripWithCharForWString) {
+  const std::wstring RAW_TEXT = L"  hello";
+  const wchar_t *TEXT = L"hello";
+  const wchar_t SPACE = L' ';
+  const wchar_t BLANK = L'\0';
+  checkLstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testLstripWithCharForU16String) {
+  const std::u16string RAW_TEXT = u"  hello";
+  const char16_t *TEXT = u"hello";
+  const char16_t SPACE = u' ';
+  const char16_t BLANK = u'\0';
+  checkLstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testLStripWithCharForU32String) {
+  const std::u32string RAW_TEXT = U"  hello";
+  const char32_t *TEXT = U"hello";
+  const char32_t SPACE = U' ';
+  const char32_t BLANK = U'\0';
+  checkLstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testRstripForString) {
+  const std::string RAW_TEXT = "hello \r\t ";
+  const char *TEXT = "hello";
+  const char *SPACE = " ";
+  const std::string BLANK = "";
+  checkRstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testRstripForU8String) {
+  const std::string RAW_TEXT = u8"hello \r\t ";
+  const char *TEXT = u8"hello";
+  const char *SPACE = u8" ";
+  const std::string BLANK = u8"";
+  checkRstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testRstripForWString) {
+  const std::wstring RAW_TEXT = L"hello \r\t ";
+  const wchar_t *TEXT = L"hello";
+  const wchar_t *SPACE = L" ";
+  const std::wstring BLANK = L"";
+  checkRstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testRstripForU16String) {
+  const std::u16string RAW_TEXT = u"hello \r\t ";
+  const char16_t *TEXT = u"hello";
+  const char16_t *SPACE = u" ";
+  const std::u16string BLANK = u"";
+  checkRstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testRstripForU32String) {
+  const std::u32string RAW_TEXT = U"hello \r\t ";
+  const char32_t *TEXT = U"hello";
+  const char32_t *SPACE = U" ";
+  const std::u32string BLANK = U"";
+  checkRstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testRstripWithCharForString) {
+  const std::string RAW_TEXT = "hello  ";
+  const char *TEXT = "hello";
+  const char SPACE = ' ';
+  const char BLANK = '\0';
+  checkRstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testRstripWithCharForU8String) {
+  const std::string RAW_TEXT = u8"hello  ";
+  const char *TEXT = u8"hello";
+  const char SPACE = ' ';
+  const char BLANK = '\0';
+  checkRstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testRstripWithCharForWString) {
+  const std::wstring RAW_TEXT = L"hello  ";
+  const wchar_t *TEXT = L"hello";
+  const wchar_t SPACE = L' ';
+  const wchar_t BLANK = L'\0';
+  checkRstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testRstripWithCharForU16String) {
+  const std::u16string RAW_TEXT = u"hello  ";
+  const char16_t *TEXT = u"hello";
+  const char16_t SPACE = u' ';
+  const char16_t BLANK = u'\0';
+  checkRstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testRstripWithCharForU32String) {
+  const std::u32string RAW_TEXT = U"hello  ";
+  const char32_t *TEXT = U"hello";
+  const char32_t SPACE = U' ';
+  const char32_t BLANK = U'\0';
+  checkRstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testStripForString) {
+  const std::string RAW_TEXT = "  hello  ";
+  const char *TEXT = "hello";
+  const char *SPACE = " ";
+  const std::string BLANK = "";
+  checkStrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testStripForU8String) {
+  const std::string RAW_TEXT = u8"  hello  ";
+  const char *TEXT = u8"hello";
+  const char *SPACE = u8" ";
+  const std::string BLANK = u8"";
+  checkStrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testStripForWString) {
+  const std::wstring RAW_TEXT = L"  hello  ";
+  const wchar_t *TEXT = L"hello";
+  const wchar_t *SPACE = L" ";
+  const std::wstring BLANK = L"";
+  checkStrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testStripForU16String) {
+  const std::u16string RAW_TEXT = u"  hello  ";
+  const char16_t *TEXT = u"hello";
+  const char16_t *SPACE = u" ";
+  const std::u16string BLANK = u"";
+  checkStrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testStripForU32String) {
+  const std::u32string RAW_TEXT = U"  hello  ";
+  const char32_t *TEXT = U"hello";
+  const char32_t *SPACE = U" ";
+  const std::u32string BLANK = U"";
+  checkStrip(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testStripWithCharForString) {
+  const std::string RAW_TEXT = "  hello  ";
+  const char *TEXT = "hello";
+  const char SPACE = ' ';
+  const char BLANK = '\0';
+  checkStripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testStripWithCharForU8String) {
+  const std::string RAW_TEXT = u8"  hello  ";
+  const char *TEXT = u8"hello";
+  const char SPACE = ' ';
+  const char BLANK = '\0';
+  checkStripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testStripWithCharForWString) {
+  const std::wstring RAW_TEXT = L"  hello  ";
+  const wchar_t *TEXT = L"hello";
+  const wchar_t SPACE = L' ';
+  const wchar_t BLANK = L'\0';
+  checkStripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testStripWithCharForU16String) {
+  const std::u16string RAW_TEXT = u"  hello  ";
+  const char16_t *TEXT = u"hello";
+  const char16_t SPACE = u' ';
+  const char16_t BLANK = u'\0';
+  checkStripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testStripWithCharForU32String) {
+  const std::u32string RAW_TEXT = U"  hello  ";
+  const char32_t *TEXT = U"hello";
+  const char32_t SPACE = U' ';
+  const char32_t BLANK = U'\0';
+  checkStripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+}
+
+TEST_F(StringTest, testContainsForString) {
+  const std::string TEXT = "hello world";
+  const std::string CAPITALIZED = "HELLO WORLD";
+  const char *PREFIX = "hello";
+  const char *SUFFIX = "world";
+  const char *SPACE = " ";
+  const char *BLANK = "";
+  const char *WEIRD = "?";
+  checkContains(TEXT, CAPITALIZED, PREFIX, SUFFIX, SPACE, BLANK, WEIRD);
+}
+
+TEST_F(StringTest, testContainsForU8String) {
+  const std::string TEXT = u8"hello world";
+  const std::string CAPITALIZED = u8"HELLO WORLD";
+  const char *PREFIX = u8"hello";
+  const char *SUFFIX = u8"world";
+  const char *SPACE = u8" ";
+  const char *BLANK = u8"";
+  const char *WEIRD = u8"?";
+  checkContains(TEXT, CAPITALIZED, PREFIX, SUFFIX, SPACE, BLANK, WEIRD);
+}
+
+TEST_F(StringTest, testContainsForWString) {
+  const std::wstring TEXT = L"hello world";
+  const std::wstring CAPITALIZED = L"HELLO WORLD";
+  const wchar_t *PREFIX = L"hello";
+  const wchar_t *SUFFIX = L"world";
+  const wchar_t *SPACE = L" ";
+  const wchar_t *BLANK = L"";
+  const wchar_t *WEIRD = L"?";
+  checkContains(TEXT, CAPITALIZED, PREFIX, SUFFIX, SPACE, BLANK, WEIRD);
+}
+
+TEST_F(StringTest, testContainsForU16String) {
+  const std::u16string TEXT = u"hello world";
+  const std::u16string CAPITALIZED = u"HELLO WORLD";
+  const char16_t *PREFIX = u"hello";
+  const char16_t *SUFFIX = u"world";
+  const char16_t *SPACE = u" ";
+  const char16_t *BLANK = u"";
+  const char16_t *WEIRD = u"?";
+  checkContains(TEXT, CAPITALIZED, PREFIX, SUFFIX, SPACE, BLANK, WEIRD);
+}
+
+TEST_F(StringTest, testContainsForU32String) {
+  const std::u32string TEXT = U"hello world";
+  const std::u32string CAPITALIZED = U"HELLO WORLD";
+  const char32_t *PREFIX = U"hello";
+  const char32_t *SUFFIX = U"world";
+  const char32_t *SPACE = U" ";
+  const char32_t *BLANK = U"";
+  const char32_t *WEIRD = U"?";
+  checkContains(TEXT, CAPITALIZED, PREFIX, SUFFIX, SPACE, BLANK, WEIRD);
 }

@@ -33,144 +33,174 @@ namespace snap {
 
 namespace string {
 
-inline bool startsWith(const std::string &haystack,
-                       const std::string &needle) {
+template <typename T>
+inline bool startsWith(const std::basic_string<T> &haystack,
+                       const std::basic_string<T> &needle) {
   return std::equal(needle.begin(), needle.end(), haystack.begin());
 }
 
-inline bool startsWith(const std::wstring &haystack,
-                       const std::wstring &needle) {
-  return std::equal(needle.begin(), needle.end(), haystack.begin());
+template <typename T>
+inline bool startsWith(const T *haystack, const std::basic_string<T> &needle) {
+  return startsWith(std::basic_string<T>(haystack), needle);
 }
 
-inline bool endsWith(const std::string &haystack,
-                     const std::string &needle) {
+template <typename T>
+inline bool startsWith(const std::basic_string<T> &haystack, const T *needle) {
+  return startsWith(haystack, std::basic_string<T>(needle));
+}
+
+template <typename T>
+inline bool startsWith(const T *haystack, const T *needle) {
+  return startsWith(std::basic_string<T>(haystack),
+                    std::basic_string<T>(needle));
+}
+
+template <typename T>
+inline bool endsWith(const std::basic_string<T> &haystack,
+                     const std::basic_string<T> &needle) {
   return std::equal(needle.rbegin(), needle.rend(), haystack.rbegin());
 }
 
-inline bool endsWith(const std::wstring &haystack,
-                     const std::wstring &needle) {
-  return std::equal(needle.rbegin(), needle.rend(), haystack.rbegin());
+template <typename T>
+inline bool endsWith(const T *haystack, const std::basic_string<T> &needle) {
+  return endsWith(std::basic_string<T>(haystack), needle);
 }
 
-template <class UnaryPredicate>
-inline std::string transform(std::string s, UnaryPredicate pred) {
+template <typename T>
+inline bool endsWith(const std::basic_string<T> &haystack, const T *needle) {
+  return endsWith(haystack, std::basic_string<T>(needle));
+}
+
+template <typename T>
+inline bool endsWith(const T *haystack, const T *needle) {
+  return endsWith(std::basic_string<T>(haystack),
+                  std::basic_string<T>(needle));
+}
+
+template <typename T, class UnaryPredicate>
+inline std::basic_string<T> transform(std::basic_string<T> s,
+                                      UnaryPredicate pred) {
   std::transform(s.begin(), s.end(), s.begin(), pred);
   return s;
 }
 
-template <class UnaryPredicate>
-inline std::wstring transform(std::wstring s, UnaryPredicate pred) {
-  std::transform(s.begin(), s.end(), s.begin(), pred);
-  return s;
+template <typename T, class UnaryPredicate>
+inline std::basic_string<T> transform(const T *s,
+                                      UnaryPredicate pred) {
+  return transform(std::basic_string<T>(s), pred);
 }
 
-inline std::string uppercase(const std::string &s) {
+template <typename T>
+inline std::basic_string<T> uppercase(const std::basic_string<T> &s) {
   return transform(s, ::toupper);
 }
 
-inline std::wstring uppercase(const std::wstring &s) {
-  return transform(s, ::toupper);
+template <typename T>
+inline std::basic_string<T> uppercase(const T *s) {
+  return uppercase(std::basic_string<T>(s));
 }
 
-inline std::string lowercase(const std::string &s) {
+template <typename T>
+inline std::basic_string<T> lowercase(const std::basic_string<T> &s) {
   return transform(s, ::tolower);
 }
 
-inline std::wstring lowercase(const std::wstring &s) {
-  return transform(s, ::tolower);
+template <typename T>
+inline std::basic_string<T> lowercase(const T *s) {
+  return lowercase(std::basic_string<T>(s));
 }
 
-template <class UnaryPredicate>
-inline std::string lstrip(const std::string &s, UnaryPredicate pred) {
-  auto wsfront = std::find_if_not(s.begin(), s.end(), pred);
-  auto wsback = s.end();
-  return std::string(wsfront, wsback);
+template <typename T>
+inline std::basic_string<T> lstrip(const std::basic_string<T> &s) {
+  auto first = std::find_if_not(s.begin(), s.end(), ::isspace);
+  auto last = s.end();
+  return std::basic_string<T>(first, last);
 }
 
-inline std::string lstrip(const std::string &s) {
-  return lstrip(s, ::isspace);
+template <typename T>
+inline std::basic_string<T> lstrip(const T *s) {
+  return lstrip(std::basic_string<T>(s));
 }
 
-inline std::string lstrip(const std::string &s, char ch) {
-  return lstrip(s, [&](char c) {
+template <typename T>
+inline std::basic_string<T> lstrip(const std::basic_string<T> &s, const T ch) {
+  auto first = std::find_if_not(s.begin(), s.end(), [&](T c) {
       return ch == c;
     });
+  auto last = s.end();
+  return std::basic_string<T>(first, last);
 }
 
-template <class UnaryPredicate>
-inline std::wstring lstrip(const std::wstring &s, UnaryPredicate pred) {
-  auto wsfront = std::find_if_not(s.begin(), s.end(), pred);
-  auto wsback = s.end();
-  return std::wstring(wsfront, wsback);
+template <typename T>
+inline std::basic_string<T> lstrip(const T *s, const T ch) {
+  return lstrip(std::basic_string<T>(s), ch);
 }
 
-inline std::wstring lstrip(const std::wstring &s) {
-  return lstrip(s, ::isspace);
+template <typename T>
+inline std::basic_string<T> rstrip(const std::basic_string<T> &s) {
+  auto first = s.begin();
+  auto last = std::find_if_not(s.rbegin(), s.rend(), ::isspace).base();
+  return std::basic_string<T>(first, last);
 }
 
-inline std::wstring lstrip(const std::wstring &s, wchar_t ch) {
-  return lstrip(s, [&](wchar_t c) {
+template <typename T>
+inline std::basic_string<T> rstrip(const T *s) {
+  return rstrip(std::basic_string<T>(s));
+}
+
+template <typename T>
+inline std::basic_string<T> rstrip(const std::basic_string<T> &s, const T ch) {
+  auto first = s.begin();
+  auto last = std::find_if_not(s.rbegin(), s.rend(), [&](T c) {
       return ch == c;
-    });
+    }).base();
+  return std::basic_string<T>(first, last);
 }
 
-template <class UnaryPredicate>
-inline std::string rstrip(const std::string &s, UnaryPredicate pred) {
-  auto wsfront = s.begin();
-  auto wsback = std::find_if_not(s.rbegin(), s.rend(), pred).base();
-  return std::string(wsfront, wsback);
+template <typename T>
+inline std::basic_string<T> rstrip(const T *s, const T ch) {
+  return rstrip(std::basic_string<T>(s), ch);
 }
 
-inline std::string rstrip(const std::string &s) {
-  return rstrip(s, ::isspace);
-}
-
-inline std::string rstrip(const std::string &s, char ch) {
-  return rstrip(s, [&](char c) {
-      return ch == c;
-    });
-}
-
-template <class UnaryPredicate>
-inline std::wstring rstrip(const std::wstring &s, UnaryPredicate pred) {
-  auto wsfront = s.begin();
-  auto wsback = std::find_if_not(s.rbegin(), s.rend(), pred).base();
-  return std::wstring(wsfront, wsback);
-}
-
-inline std::wstring rstrip(const std::wstring &s) {
-  return rstrip(s, ::isspace);
-}
-
-inline std::wstring rstrip(const std::wstring &s, wchar_t ch) {
-  return rstrip(s, [&](wchar_t c) {
-      return ch == c;
-    });
-}
-
-inline std::string strip(const std::string &s) {
+template <typename T>
+inline std::basic_string<T> strip(const std::basic_string<T> &s) {
   return lstrip(rstrip(s));
 }
 
-inline std::string strip(const std::string &s, char ch) {
+template <typename T>
+inline std::basic_string<T> strip(const T *s) {
+  return lstrip(rstrip(std::basic_string<T>(s)));
+}
+
+template <typename T>
+inline std::basic_string<T> strip(const std::basic_string<T> &s, const T ch) {
   return lstrip(rstrip(s, ch), ch);
 }
 
-inline std::wstring strip(const std::wstring &s) {
-  return lstrip(rstrip(s));
+template <typename T>
+inline std::basic_string<T> strip(const T *s, const T ch) {
+  return strip(std::basic_string<T>(s), ch);
 }
 
-inline std::wstring strip(const std::wstring &s, wchar_t ch) {
-  return lstrip(rstrip(s, ch), ch);
-}
-
-inline bool contains(const std::string &haystack, const std::string &needle) {
+template <typename T>
+inline bool contains(const std::basic_string<T> &haystack,
+                     const std::basic_string<T> &needle) {
   return haystack.find(needle) != std::string::npos;
 }
 
-inline bool contains(const std::wstring &haystack, const std::wstring &needle) {
-  return haystack.find(needle) != std::string::npos;
+template <typename T>
+inline bool contains(const T *haystack, const std::basic_string<T> &needle) {
+  return contains(std::basic_string<T>(haystack), needle);
+}
+
+template <typename T>
+inline bool contains(const std::basic_string<T> &haystack, const T *needle) {
+  return contains(haystack, std::basic_string<T>(needle));
+}
+
+template <typename T>
+inline bool contains(const T *haystack, const T *needle) {
+  return contains(std::basic_string<T>(haystack), std::basic_string<T>(needle));
 }
 
 }  // namespace string
