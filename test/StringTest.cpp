@@ -27,6 +27,7 @@
 #include <string>
 #include "snap/string.hpp"
 
+
 class StringTest : public ::testing::Test {
  protected:
   template <typename T>
@@ -162,6 +163,31 @@ class StringTest : public ::testing::Test {
     EXPECT_FALSE(snap::string::contains(suffix, text));
     EXPECT_FALSE(snap::string::contains(prefix, suffix));
     EXPECT_FALSE(snap::string::contains(text, weird));
+  }
+
+  template <typename T>
+  void checkReplaceWithChar(const std::basic_string<T> &rawText,
+                            const T *text,
+                            const T space,
+                            const T delim) {
+    EXPECT_EQ(text, snap::string::replace(rawText, delim, space));
+    EXPECT_EQ(text, snap::string::replace(text, delim, space));
+    EXPECT_EQ(rawText, snap::string::replace(text, space, delim));
+    EXPECT_EQ(rawText, snap::string::replace(rawText, space, delim));
+  }
+
+  template <typename T>
+  void checkReplaceWithString(const std::basic_string<T> &rawText,
+                              const T *text,
+                              const T *space,
+                              const T *delim,
+                              const T *blank) {
+    EXPECT_EQ(text, snap::string::replace(rawText, delim, space));
+    EXPECT_EQ(text, snap::string::replace(text, delim, space));
+    EXPECT_EQ(rawText, snap::string::replace(text, space, delim));
+    EXPECT_EQ(rawText, snap::string::replace(rawText, space, delim));
+    EXPECT_EQ(blank, snap::string::replace(blank, space, delim));
+    EXPECT_EQ(rawText, snap::string::replace(rawText, blank, space));
   }
 };
 
@@ -639,4 +665,89 @@ TEST_F(StringTest, testContainsForU32String) {
   const char32_t *BLANK = U"";
   const char32_t *WEIRD = U"?";
   checkContains(TEXT, CAPITALIZED, PREFIX, SUFFIX, SPACE, BLANK, WEIRD);
+}
+
+TEST_F(StringTest, replaceWithCharForString) {
+  const std::string RAW_TEXT = "hello_world";
+  const char *TEXT = "hello world";
+  const char SPACE = ' ';
+  const char DELIM = '_';
+  checkReplaceWithChar(RAW_TEXT, TEXT, SPACE, DELIM);
+}
+
+TEST_F(StringTest, replaceWithCharForU8String) {
+  const std::string RAW_TEXT = u8"hello_world";
+  const char *TEXT = u8"hello world";
+  const char SPACE = ' ';
+  const char DELIM = '_';
+  checkReplaceWithChar(RAW_TEXT, TEXT, SPACE, DELIM);
+}
+
+TEST_F(StringTest, replaceWithCharForWString) {
+  const std::wstring RAW_TEXT = L"hello_world";
+  const wchar_t *TEXT = L"hello world";
+  const wchar_t SPACE = L' ';
+  const wchar_t DELIM = L'_';
+  checkReplaceWithChar(RAW_TEXT, TEXT, SPACE, DELIM);
+}
+
+TEST_F(StringTest, replaceWithCharForU16String) {
+  const std::u16string RAW_TEXT = u"hello_world";
+  const char16_t *TEXT = u"hello world";
+  const char16_t SPACE = u' ';
+  const char16_t DELIM = u'_';
+  checkReplaceWithChar(RAW_TEXT, TEXT, SPACE, DELIM);
+}
+
+TEST_F(StringTest, replaceWithCharForU32String) {
+  const std::u32string RAW_TEXT = U"hello_world";
+  const char32_t *TEXT = U"hello world";
+  const char32_t SPACE = U' ';
+  const char32_t DELIM = U'_';
+  checkReplaceWithChar(RAW_TEXT, TEXT, SPACE, DELIM);
+}
+
+TEST_F(StringTest, replaceWithStringForString) {
+  const std::string RAW_TEXT = " hello__world ";
+  const char *TEXT = " hello  world ";
+  const char *SPACE = "  ";
+  const char *DELIM = "__";
+  const char *BLANK = "";
+  checkReplaceWithString(RAW_TEXT, TEXT, SPACE, DELIM, BLANK);
+}
+
+TEST_F(StringTest, replaceWithStringForU8String) {
+  const std::string RAW_TEXT = u8" hello__world ";
+  const char *TEXT = u8" hello  world ";
+  const char *SPACE = u8"  ";
+  const char *DELIM = u8"__";
+  const char *BLANK = u8"";
+  checkReplaceWithString(RAW_TEXT, TEXT, SPACE, DELIM, BLANK);
+}
+
+TEST_F(StringTest, replaceWithStringForWString) {
+  const std::wstring RAW_TEXT = L" hello__world ";
+  const wchar_t *TEXT = L" hello  world ";
+  const wchar_t *SPACE = L"  ";
+  const wchar_t *DELIM = L"__";
+  const wchar_t *BLANK = L"";
+  checkReplaceWithString(RAW_TEXT, TEXT, SPACE, DELIM, BLANK);
+}
+
+TEST_F(StringTest, replaceWithStringForU16String) {
+  const std::u16string RAW_TEXT = u" hello__world ";
+  const char16_t *TEXT = u" hello  world ";
+  const char16_t *SPACE = u"  ";
+  const char16_t *DELIM = u"__";
+  const char16_t *BLANK = u"";
+  checkReplaceWithString(RAW_TEXT, TEXT, SPACE, DELIM, BLANK);
+}
+
+TEST_F(StringTest, replaceWithStringForU32String) {
+  const std::u32string RAW_TEXT = U" hello__world ";
+  const char32_t *TEXT = U" hello  world ";
+  const char32_t *SPACE = U"  ";
+  const char32_t *DELIM = U"__";
+  const char32_t *BLANK = U"";
+  checkReplaceWithString(RAW_TEXT, TEXT, SPACE, DELIM, BLANK);
 }

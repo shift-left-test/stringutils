@@ -26,6 +26,7 @@
 #define INCLUDE_SNAP_STRING_HPP_
 
 #include <cctype>
+#include <cstddef>
 #include <algorithm>
 #include <string>
 
@@ -201,6 +202,84 @@ inline bool contains(const std::basic_string<T> &haystack, const T *needle) {
 template <typename T>
 inline bool contains(const T *haystack, const T *needle) {
   return contains(std::basic_string<T>(haystack), std::basic_string<T>(needle));
+}
+
+template <typename T>
+inline std::basic_string<T> replace(std::basic_string<T> s,
+                                    const T from, const T to) {
+  std::replace(s.begin(), s.end(), from, to);
+  return s;
+}
+
+template <typename T>
+inline std::basic_string<T> replace(const T *s, const T from, const T to) {
+  return replace(std::basic_string<T>(s), from, to);
+}
+
+template <typename T>
+inline std::basic_string<T> replace(std::basic_string<T> s,
+                                    const std::basic_string<T> &from,
+                                    const std::basic_string<T> &to) {
+  if (from.empty()) {
+    return s;
+  }
+  std::size_t position = 0;
+  while ((position = s.find(from, position)) != std::string::npos) {
+    s.replace(position, from.length(), to);
+    position += to.length();
+  }
+  return s;
+}
+
+template <typename T>
+inline std::basic_string<T> replace(const T *s,
+                                    const std::basic_string<T> &from,
+                                    const std::basic_string<T> &to) {
+  return replace(std::basic_string<T>(s), from, to);
+}
+
+template <typename T>
+inline std::basic_string<T> replace(std::basic_string<T> s,
+                                    const T *from,
+                                    const std::basic_string<T> &to) {
+  return replace(s, std::basic_string<T>(from), to);
+}
+
+template <typename T>
+inline std::basic_string<T> replace(std::basic_string<T> s,
+                                    const std::basic_string<T> &from,
+                                    const T *to) {
+  return replace(s, from, std::basic_string<T>(to));
+}
+
+template <typename T>
+inline std::basic_string<T> replace(const T *s,
+                                    const T *from,
+                                    const std::basic_string<T> &to) {
+  return replace(std::basic_string<T>(s), std::basic_string<T>(from), to);
+}
+
+template <typename T>
+inline std::basic_string<T> replace(const T *s,
+                                    const std::basic_string<T> &from,
+                                    const T *to) {
+  return replace(std::basic_string<T>(s), from, std::basic_string<T>(to));
+}
+
+template <typename T>
+inline std::basic_string<T> replace(std::basic_string<T> s,
+                                    const T *from,
+                                    const T *to) {
+  return replace(s, std::basic_string<T>(from), std::basic_string<T>(to));
+}
+
+template <typename T>
+inline std::basic_string<T> replace(const T *s,
+                                    const T *from,
+                                    const T *to) {
+  return replace(std::basic_string<T>(s),
+                 std::basic_string<T>(from),
+                 std::basic_string<T>(to));
 }
 
 }  // namespace string
