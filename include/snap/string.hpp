@@ -28,6 +28,7 @@
 #include <cctype>
 #include <cstddef>
 #include <algorithm>
+#include <memory>
 #include <string>
 
 namespace snap {
@@ -184,6 +185,66 @@ inline std::basic_string<T> strip(const T *s, const T ch) {
 }
 
 template <typename T>
+inline std::basic_string<T> ltrim(const std::basic_string<T> &s) {
+  return lstrip(s);
+}
+
+template <typename T>
+inline std::basic_string<T> ltrim(const T *s) {
+  return lstrip(s);
+}
+
+template <typename T>
+inline std::basic_string<T> ltrim(const std::basic_string<T> &s, const T ch) {
+  return lstrip(s, ch);
+}
+
+template <typename T>
+inline std::basic_string<T> ltrim(const T *s, const T ch) {
+  return lstrip(s, ch);
+}
+
+template <typename T>
+inline std::basic_string<T> rtrim(const std::basic_string<T> &s) {
+  return rstrip(s);
+}
+
+template <typename T>
+inline std::basic_string<T> rtrim(const T *s) {
+  return rstrip(s);
+}
+
+template <typename T>
+inline std::basic_string<T> rtrim(const std::basic_string<T> &s, const T ch) {
+  return rstrip(s, ch);
+}
+
+template <typename T>
+inline std::basic_string<T> rtrim(const T *s, const T ch) {
+  return rstrip(s, ch);
+}
+
+template <typename T>
+inline std::basic_string<T> trim(const std::basic_string<T> &s) {
+  return strip(s);
+}
+
+template <typename T>
+inline std::basic_string<T> trim(const T *s) {
+  return strip(s);
+}
+
+template <typename T>
+inline std::basic_string<T> trim(const std::basic_string<T> &s, const T ch) {
+  return strip(s, ch);
+}
+
+template <typename T>
+inline std::basic_string<T> trim(const T *s, const T ch) {
+  return strip(s, ch);
+}
+
+template <typename T>
 inline bool contains(const std::basic_string<T> &haystack,
                      const std::basic_string<T> &needle) {
   return haystack.find(needle) != std::string::npos;
@@ -281,6 +342,49 @@ inline std::basic_string<T> replace(const T *s,
                  std::basic_string<T>(from),
                  std::basic_string<T>(to));
 }
+
+template <typename T>
+inline T toConstChar(const T& data) {
+  return data;
+}
+
+inline const char * toConstChar(const std::string &data) {
+  return data.c_str();
+}
+
+inline const wchar_t *toConstChar(const std::wstring &data) {
+  return data.c_str();
+}
+
+template <typename ... Args>
+inline std::string format(const std::string &format, const Args& ... args) {
+  char buf[4096];
+  std::snprintf(buf, sizeof(buf), format.c_str(), toConstChar(args) ...);
+  return std::string(buf);
+  /*
+  std::size_t size = std::snprintf(nullptr, 0, format.c_str(),
+                                   toConstChar(args) ...) + sizeof(char);
+  std::unique_ptr<char[]> buf(new char[size]);
+  std::snprintf(buf.get(), size, format.c_str(), toConstChar(args) ...);
+  return std::string(buf.get(), size - 1);
+  */
+}
+
+template <typename ... Args>
+inline std::wstring format(const std::wstring &format, const Args& ... args) {
+  wchar_t buf[4096];
+  std::swprintf(buf, sizeof(buf), format.c_str(), toConstChar(args) ...);
+  return std::wstring(buf);
+  /*
+
+  std::size_t size = std::swprintf(nullptr, 0, format.c_str(),
+                                   toConstChar(args) ...) + sizeof(wchar_t);
+  std::unique_ptr<wchar_t[]> buf(new wchar_t[size]);
+  std::swprintf(buf.get(), size, format.c_str(), toConstChar(args) ...);
+  return std::wstring(buf.get(), size - 1);
+  */
+}
+
 
 }  // namespace string
 

@@ -147,6 +147,69 @@ class StringTest : public ::testing::Test {
   }
 
   template <typename T>
+  void checkLtrim(const std::basic_string<T> &rawText,
+                  const T *text,
+                  const T *space,
+                  const std::basic_string<T> &blank) {
+    EXPECT_EQ(text, snap::string::ltrim(rawText));
+    EXPECT_EQ(text, snap::string::ltrim(text));
+    EXPECT_EQ(blank, snap::string::ltrim(space));
+    EXPECT_EQ(blank, snap::string::ltrim(blank));
+  }
+
+  template <typename T>
+  void checkLtrimWithChar(const std::basic_string<T> &rawText,
+                          const T *text,
+                          const T space,
+                          const T blank) {
+    EXPECT_EQ(text, snap::string::ltrim(rawText, space));
+    EXPECT_EQ(text, snap::string::ltrim(text, space));
+    EXPECT_EQ(rawText, snap::string::ltrim(rawText, blank));
+  }
+
+  template <typename T>
+  void checkRtrim(const std::basic_string<T> &rawText,
+                  const T *text,
+                  const T *space,
+                  const std::basic_string<T> &blank) {
+    EXPECT_EQ(text, snap::string::rtrim(rawText));
+    EXPECT_EQ(text, snap::string::rtrim(text));
+    EXPECT_EQ(blank, snap::string::rtrim(space));
+    EXPECT_EQ(blank, snap::string::rtrim(blank));
+  }
+
+  template <typename T>
+  void checkRtrimWithChar(const std::basic_string<T> &rawText,
+                          const T *text,
+                          const T space,
+                          const T blank) {
+    EXPECT_EQ(text, snap::string::rtrim(rawText, space));
+    EXPECT_EQ(text, snap::string::rtrim(text, space));
+    EXPECT_EQ(rawText, snap::string::rtrim(rawText, blank));
+  }
+
+  template <typename T>
+  void checkTrim(const std::basic_string<T> &rawText,
+                 const T *text,
+                 const T *space,
+                 const std::basic_string<T> &blank) {
+    EXPECT_EQ(text, snap::string::trim(rawText));
+    EXPECT_EQ(text, snap::string::trim(text));
+    EXPECT_EQ(blank, snap::string::trim(space));
+    EXPECT_EQ(blank, snap::string::trim(blank));
+  }
+
+  template <typename T>
+  void checkTrimWithChar(const std::basic_string<T> &rawText,
+                         const T *text,
+                         const T space,
+                         const T blank) {
+    EXPECT_EQ(text, snap::string::trim(rawText, space));
+    EXPECT_EQ(text, snap::string::trim(text, space));
+    EXPECT_EQ(rawText, snap::string::trim(rawText, blank));
+  }
+
+  template <typename T>
   void checkContains(const std::basic_string<T> &text,
                      const std::basic_string<T> &capitalized,
                      const T *prefix,
@@ -750,4 +813,28 @@ TEST_F(StringTest, replaceWithStringForU32String) {
   const char32_t *DELIM = U"__";
   const char32_t *BLANK = U"";
   checkReplaceWithString(RAW_TEXT, TEXT, SPACE, DELIM, BLANK);
+}
+
+TEST_F(StringTest, formatWithArgsForString) {
+  const char *FORMAT = "%s %s";
+  const std::string ARG1 = "hello";
+  const char *ARG2 = "world";
+  const char *expected = "hello world";
+  EXPECT_EQ(expected, snap::string::format(FORMAT, ARG1, ARG2));
+}
+
+TEST_F(StringTest, formatWithArgsForU8String) {
+  const char *FORMAT = u8"%s %s";
+  const std::string ARG1 = u8"hello";
+  const char *ARG2 = u8"world";
+  const char *expected = u8"hello world";
+  EXPECT_EQ(expected, snap::string::format(FORMAT, ARG1, ARG2));
+}
+
+TEST_F(StringTest, formatWithArgsForWString) {
+  const wchar_t *FORMAT = L"%S %S";
+  const std::wstring ARG1 = L"hello";
+  const wchar_t *ARG2 = L"world";
+  const wchar_t *expected = L"hello world";
+  EXPECT_EQ(expected, snap::string::format(FORMAT, ARG1, ARG2));
 }
