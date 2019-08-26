@@ -838,3 +838,117 @@ TEST_F(StringTest, formatWithArgsForWString) {
   const wchar_t *EXPECTED = L"hello world";
   EXPECT_EQ(EXPECTED, snap::string::format(FORMAT, ARG1, ARG2));
 }
+
+TEST_F(StringTest, splitForString) {
+  const char *TEXT = "hello world";
+  const char TOKEN = ' ';
+  const char *FIRST = "hello";
+  const char *SECOND = "world";
+
+  auto actual = snap::string::split(TEXT, TOKEN);
+  ASSERT_EQ(2, actual.size());
+  EXPECT_EQ(FIRST, actual[0]);
+  EXPECT_EQ(SECOND, actual[1]);
+}
+
+TEST_F(StringTest, splitVariousTexts) {
+  EXPECT_EQ(0, snap::string::split("", ' ').size());
+  EXPECT_EQ(0, snap::string::split("\0", '\0').size());
+  EXPECT_EQ(1, snap::string::split(" ", '\0').size());
+  EXPECT_EQ(1, snap::string::split(" ", ' ').size());
+  EXPECT_EQ(1, snap::string::split("hello", ' ').size());
+}
+
+TEST_F(StringTest, splitForU8String) {
+  const char *TEXT = u8"hello world";
+  const char TOKEN = ' ';
+  const char *FIRST = u8"hello";
+  const char *SECOND = u8"world";
+
+  auto actual = snap::string::split(TEXT, TOKEN);
+  ASSERT_EQ(2, actual.size());
+  EXPECT_EQ(FIRST, actual[0]);
+  EXPECT_EQ(SECOND, actual[1]);
+}
+
+TEST_F(StringTest, splitForWString) {
+  const wchar_t *TEXT = L"hello world";
+  const wchar_t TOKEN = ' ';
+  const wchar_t *FIRST = L"hello";
+  const wchar_t *SECOND = L"world";
+
+  auto actual = snap::string::split(TEXT, TOKEN);
+  ASSERT_EQ(2, actual.size());
+  EXPECT_EQ(FIRST, actual[0]);
+  EXPECT_EQ(SECOND, actual[1]);
+}
+
+TEST_F(StringTest, splitForU16String) {
+  const char16_t *TEXT = u"hello world";
+  const char16_t TOKEN = ' ';
+  const char16_t *FIRST = u"hello";
+  const char16_t *SECOND = u"world";
+
+  auto actual = snap::string::split(TEXT, TOKEN);
+  ASSERT_EQ(2, actual.size());
+  EXPECT_EQ(FIRST, actual[0]);
+  EXPECT_EQ(SECOND, actual[1]);
+}
+
+TEST_F(StringTest, splitForU32String) {
+  const char32_t *TEXT = U"hello world";
+  const char32_t TOKEN = ' ';
+  const char32_t *FIRST = U"hello";
+  const char32_t *SECOND = U"world";
+
+  auto actual = snap::string::split(TEXT, TOKEN);
+  ASSERT_EQ(2, actual.size());
+  EXPECT_EQ(FIRST, actual[0]);
+  EXPECT_EQ(SECOND, actual[1]);
+}
+
+TEST_F(StringTest, joinVariousTexts) {
+  EXPECT_EQ("", snap::string::join({"", ""}, ""));
+  EXPECT_EQ("\0", snap::string::join({"", ""}, "\0"));
+  EXPECT_EQ("", snap::string::join({"\0", "\0"}, "\0"));
+}
+
+TEST_F(StringTest, joinForString) {
+  const char *FIRST = "hello";
+  const char *SECOND = "world";
+  const char *DELIM = " ";
+  const char *EXPECTED = "hello world";
+  EXPECT_EQ(EXPECTED, snap::string::join({FIRST, SECOND}, DELIM));
+}
+
+TEST_F(StringTest, joinForU8String) {
+  const char *FIRST = u8"hello";
+  const char *SECOND = u8"world";
+  const char *DELIM = u8" ";
+  const char *EXPECTED = u8"hello world";
+  EXPECT_EQ(EXPECTED, snap::string::join({FIRST, SECOND}, DELIM));
+}
+
+TEST_F(StringTest, joinForWString) {
+  const wchar_t *FIRST = L"hello";
+  const wchar_t *SECOND = L"world";
+  const wchar_t *DELIM = L" ";
+  const wchar_t *EXPECTED = L"hello world";
+  EXPECT_EQ(EXPECTED, snap::string::join({FIRST, SECOND}, DELIM));
+}
+
+TEST_F(StringTest, joinForU16String) {
+  const char16_t *FIRST = u"hello";
+  const char16_t *SECOND = u"world";
+  const char16_t *DELIM = u" ";
+  const char16_t *EXPECTED = u"hello world";
+  EXPECT_EQ(EXPECTED, snap::string::join({FIRST, SECOND}, DELIM));
+}
+
+TEST_F(StringTest, joinForU32String) {
+  const char32_t *FIRST = U"hello";
+  const char32_t *SECOND = U"world";
+  const char32_t *DELIM = U" ";
+  const char32_t *EXPECTED = U"hello world";
+  EXPECT_EQ(EXPECTED, snap::string::join({FIRST, SECOND}, DELIM));
+}

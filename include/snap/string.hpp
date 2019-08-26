@@ -29,7 +29,9 @@
 #include <cstddef>
 #include <algorithm>
 #include <memory>
+#include <sstream>
 #include <string>
+#include <vector>
 
 namespace snap {
 
@@ -386,6 +388,45 @@ template <typename ... Args>
 inline std::basic_string<wchar_t> format(const std::basic_string<wchar_t> &fmt,
                                          const Args& ... args) {
   return format(fmt.c_str(), args ...);
+}
+
+template <typename T>
+inline std::vector<std::basic_string<T>> split(const std::basic_string<T> &s,
+                                               const T delim = ' ') {
+  std::vector<std::basic_string<T>> tokens;
+  std::basic_istringstream<T> ss;
+  ss.str(s);
+  std::basic_string<T> token;
+  while (std::getline(ss, token, delim)) {
+    tokens.emplace_back(token);
+  }
+  return tokens;
+}
+
+template <typename T>
+inline std::vector<std::basic_string<T>> split(const T *s,
+                                               const T delim = ' ') {
+  return split(std::basic_string<T>(s), delim);
+}
+
+template <typename T>
+inline std::basic_string<T>
+join(const std::vector<std::basic_string<T>> &tokens,
+     const std::basic_string<T> &delim) {
+  std::basic_string<T> s;
+  for (auto it = tokens.begin(); it != tokens.end(); it++) {
+    s.append(*it);
+    if (it != std::prev(tokens.end())) {
+      s.append(delim);
+    }
+  }
+  return s;
+}
+
+template <typename T>
+inline std::basic_string<T>
+join(const std::vector<std::basic_string<T>> &tokens, const T *delim) {
+  return join(tokens, std::basic_string<T>(delim));
 }
 
 }  // namespace string
