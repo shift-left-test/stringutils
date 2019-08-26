@@ -819,22 +819,22 @@ TEST_F(StringTest, formatWithArgsForString) {
   const char *FORMAT = "%s %s";
   const std::string ARG1 = "hello";
   const char *ARG2 = "world";
-  const char *expected = "hello world";
-  EXPECT_EQ(expected, snap::string::format(FORMAT, ARG1, ARG2));
+  const char *EXPECTED = "hello world";
+  EXPECT_EQ(EXPECTED, snap::string::format(FORMAT, ARG1, ARG2));
 }
 
 TEST_F(StringTest, formatWithArgsForU8String) {
   const char *FORMAT = u8"%s %s";
   const std::string ARG1 = u8"hello";
   const char *ARG2 = u8"world";
-  const char *expected = u8"hello world";
-  EXPECT_EQ(expected, snap::string::format(FORMAT, ARG1, ARG2));
+  const char *EXPECTED = u8"hello world";
+  EXPECT_EQ(EXPECTED, snap::string::format(FORMAT, ARG1, ARG2));
 }
 
 TEST_F(StringTest, formatWithArgsForWString) {
   const wchar_t *FORMAT = L"%S %S";
   const std::wstring ARG1 = L"hello";
   const wchar_t *ARG2 = L"world";
-  const wchar_t *expected = L"hello world";
-  EXPECT_EQ(expected, snap::string::format(FORMAT, ARG1, ARG2));
+  const wchar_t *EXPECTED = L"hello world";
+  EXPECT_EQ(EXPECTED, snap::string::format(FORMAT, ARG1, ARG2));
 }

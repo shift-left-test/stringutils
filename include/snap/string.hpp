@@ -343,48 +343,50 @@ inline std::basic_string<T> replace(const T *s,
                  std::basic_string<T>(to));
 }
 
+
+namespace internal {
+
 template <typename T>
-inline T toConstChar(const T& data) {
+inline T to_const(const T& data) {
   return data;
 }
 
-inline const char * toConstChar(const std::string &data) {
+template <typename T>
+inline const T * to_const(const std::basic_string<T> &data) {
   return data.c_str();
 }
 
-inline const wchar_t *toConstChar(const std::wstring &data) {
-  return data.c_str();
-}
+}  // namespace internal
 
 template <typename ... Args>
-inline std::string format(const std::string &format, const Args& ... args) {
-  char buf[4096];
-  std::snprintf(buf, sizeof(buf), format.c_str(), toConstChar(args) ...);
-  return std::string(buf);
-  /*
-  std::size_t size = std::snprintf(nullptr, 0, format.c_str(),
-                                   toConstChar(args) ...) + sizeof(char);
+inline std::basic_string<char> format(const char *fmt, const Args& ... args) {
+  std::size_t size = std::snprintf(nullptr, 0, fmt,
+                                   internal::to_const(args) ...) + 1;
   std::unique_ptr<char[]> buf(new char[size]);
-  std::snprintf(buf.get(), size, format.c_str(), toConstChar(args) ...);
-  return std::string(buf.get(), size - 1);
-  */
+  std::snprintf(buf.get(), size, fmt, internal::to_const(args) ...);
+  return std::basic_string<char>(buf.get(), size - 1);
 }
 
 template <typename ... Args>
-inline std::wstring format(const std::wstring &format, const Args& ... args) {
-  wchar_t buf[4096];
-  std::swprintf(buf, sizeof(buf), format.c_str(), toConstChar(args) ...);
-  return std::wstring(buf);
-  /*
-
-  std::size_t size = std::swprintf(nullptr, 0, format.c_str(),
-                                   toConstChar(args) ...) + sizeof(wchar_t);
-  std::unique_ptr<wchar_t[]> buf(new wchar_t[size]);
-  std::swprintf(buf.get(), size, format.c_str(), toConstChar(args) ...);
-  return std::wstring(buf.get(), size - 1);
-  */
+inline std::basic_string<char> format(const std::basic_string<char> &fmt,
+                                      const Args& ... args) {
+  return format(fmt.c_str(), args ...);
 }
 
+template <typename ... Args>
+inline std::basic_string<wchar_t> format(const wchar_t *fmt,
+                                         const Args& ... args) {
+  // Used a fixed size buffer, since unable to predict the required size
+  wchar_t buf[65535];
+  std::swprintf(buf, sizeof(buf), fmt, internal::to_const(args) ...);
+  return std::basic_string<wchar_t>(buf);
+}
+
+template <typename ... Args>
+inline std::basic_string<wchar_t> format(const std::basic_string<wchar_t> &fmt,
+                                         const Args& ... args) {
+  return format(fmt.c_str(), args ...);
+}
 
 }  // namespace string
 
