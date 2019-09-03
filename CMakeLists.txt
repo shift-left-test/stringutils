@@ -8,7 +8,6 @@ include(CMakeUtils)
 set_cxx_standard(11)
 
 enable_testing()
-
-add_subdirectory(test)
-
+enable_test_coverage()
+add_all_subdirectories()
 enable_static_analysis(ALL)

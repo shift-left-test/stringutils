@@ -30,6 +30,16 @@ macro(set_cxx_standard VERSION)
   set(CMAKE_CXX_EXTENSIONS OFF)
 endmacro()
 
+# Macro to include all CMakeLists.txt under subdirectories.
+macro(add_all_subdirectories)
+  file(GLOB_RECURSE allListFiles LIST_DIRECTORIES False "CMakeLists.txt")
+  list(REMOVE_ITEM allListFiles "${CMAKE_SOURCE_DIR}/CMakeLists.txt")
+  foreach(listFile ${allListFiles})
+    get_filename_component(listDirectory ${listFile} DIRECTORY)
+    add_subdirectory(${listDirectory})
+  endforeach()
+endmacro()
+
 # Resolve absolute paths of the given files
 function(absolute_paths VARIABLE)
   set(result "")
@@ -278,8 +288,8 @@ function(build_debian_package)
   include(CPack)
 endfunction()
 
-# Register the given static analysis checker if available
-function(register_checker)
+# Register the given program if available
+function(register_program)
   set(oneValueArgs NAME DEPENDS)
   set(multiValueArgs PATHS NAMES OPTIONS FILES)
   cmake_parse_arguments(ARGS
@@ -314,7 +324,7 @@ endfunction()
 function(find_header_files VARIABLE)
   set(result "")
   foreach(directory ${ARGN})
-    file(GLOB_RECURSE foundFiles LIST_DIRECTORIES True "${directory}/*.h" "${directory}/*.hpp")
+    file(GLOB_RECURSE foundFiles LIST_DIRECTORIES False "${directory}/*.h" "${directory}/*.hpp")
     list(APPEND result ${foundFiles})
   endforeach()
   set(${VARIABLE} ${result} PARENT_SCOPE)
@@ -338,7 +348,7 @@ function(enable_static_analysis)
   find_header_files(HEADER_FILES ${HEADER_DIRS})
 
   if(ENABLE_ALL OR ENABLE_CLANG-TIDY)
-    register_checker(
+    register_program(
       NAME clang-tidy
       DEPENDS check
       PATHS /usr/bin
@@ -348,7 +358,7 @@ function(enable_static_analysis)
   endif()
 
   if(ENABLE_ALL OR ENABLE_CPPLINT)
-    register_checker(
+    register_program(
       NAME cpplint
       DEPENDS check
       PATHS /usr/local/bin $ENV{HOME}/.local/bin
@@ -360,7 +370,7 @@ function(enable_static_analysis)
 
   if(ENABLE_ALL OR ENABLE_CPPCHECK)
     prepend(INCLUDE_HEADER_DIRS "-I" ${HEADER_DIRS})
-    register_checker(
+    register_program(
       NAME cppcheck
       DEPENDS check
       PATHS /usr/bin
@@ -369,4 +379,17 @@ function(enable_static_analysis)
       FILES ${HEADER_FILES} ${SOURCE_FILES}
       )
   endif()
+endfunction()
+
+# Enable gcovr for test coverage
+function(enable_test_coverage)
+  add_custom_target(coverage)
+  register_program(
+    NAME gcovr
+    DEPENDS coverage
+    PATHS /usr/local/bin $ENV{HOME}/.local/bin
+    NAMES gcovr
+    OPTIONS -s
+    FILES ""
+    )
 endfunction()
