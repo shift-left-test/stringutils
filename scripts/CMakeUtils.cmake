@@ -1,3 +1,25 @@
+# MIT License
+#
+# Copyright (c) 2019 Sung Gon Kim
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 include(CMakeParseArguments)
 include(GNUInstallDirs)
 
@@ -176,6 +198,13 @@ function(build_executable)
   if(BUILD_TYPE STREQUAL "TEST")
     find_package(Threads REQUIRED)
     find_package(GTest REQUIRED)
+
+    set_target_properties(${BUILD_NAME} PROPERTIES
+      CXX_STANDARD 11
+      CXX_STANDARD_REQUIRED ON
+      CXX_EXTENSIONS OFF
+    )
+
     target_include_directories(${BUILD_NAME} PRIVATE ${GTEST_INCLUDE_DIRS})
     target_link_libraries(${BUILD_NAME}
       PRIVATE ${GTEST_BOTH_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
@@ -300,7 +329,7 @@ function(register_program)
 
   find_program(${ARGS_NAME}_PROGRAM PATHS ${ARGS_PATHS} NAMES ${ARGS_NAMES})
   if(${ARGS_NAME}_PROGRAM)
-    message(STATUS "Found ${ARGS_NAME} code checker: TRUE")
+    message(STATUS "Found ${ARGS_NAME} program: TRUE")
     add_custom_target(
       ${ARGS_NAME}
       COMMAND ${${ARGS_NAME}_PROGRAM} ${ARGS_OPTIONS} ${ARGS_FILES}
@@ -308,8 +337,9 @@ function(register_program)
     )
     add_dependencies(${ARGS_DEPENDS} ${ARGS_NAME})
   else()
-    message(STATUS "Found ${ARGS_NAME} code checker: FALSE")
+    message(STATUS "Found ${ARGS_NAME} program: FALSE")
   endif()
+
 endfunction()
 
 # Prepend the given prefix to each of the strings
@@ -353,6 +383,7 @@ function(enable_static_analysis)
       DEPENDS check
       PATHS /usr/bin
       NAMES clang-tidy
+      OPTIONS -p=${CMAKE_BINARY_DIR}
       FILES ${SOURCE_FILES}
       )
   endif()
@@ -383,13 +414,25 @@ endfunction()
 
 # Enable gcovr for test coverage
 function(enable_test_coverage)
+  set(options BRANCH_COVERAGE)
+  cmake_parse_arguments(ENABLE
+    "${options}"
+    "${oneValueArgs}"
+    "${multiValueArgs}"
+    ${ARGN})
+
   add_custom_target(coverage)
+
+  if(ENABLE_BRANCH_COVERAGE)
+    set(GCOVR_BRANCH_OPTION "-b")
+  endif()
+
   register_program(
     NAME gcovr
     DEPENDS coverage
     PATHS /usr/local/bin $ENV{HOME}/.local/bin
     NAMES gcovr
-    OPTIONS -s
+    OPTIONS ${GCOVR_BRANCH_OPTION} -s -r ${CMAKE_SOURCE_DIR} --object-directory ${CMAKE_BINARY_DIR}
     FILES ""
     )
 endfunction()
