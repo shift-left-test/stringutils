@@ -27,6 +27,7 @@
 
 #include <cctype>
 #include <cstddef>
+#include <cwchar>
 #include <algorithm>
 #include <memory>
 #include <sstream>
@@ -379,7 +380,7 @@ template <typename ... Args>
 inline std::basic_string<wchar_t> format(const wchar_t *fmt,
                                          const Args& ... args) {
   // Used a fixed size buffer, since unable to predict the required size
-  wchar_t buf[65535];
+  wchar_t buf[65535] = {};
   std::swprintf(buf, sizeof(buf), fmt, internal::to_const(args) ...);
   return std::basic_string<wchar_t>(buf);
 }
