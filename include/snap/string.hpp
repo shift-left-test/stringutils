@@ -115,136 +115,194 @@ inline std::basic_string<T> lowercase(const T *s) {
   return lowercase(std::basic_string<T>(s));
 }
 
-template <typename T>
-inline std::basic_string<T> lstrip(const std::basic_string<T> &s) {
-  auto first = std::find_if_not(s.begin(), s.end(), ::isspace);
+template <typename T, typename UnaryPredicate>
+inline std::basic_string<T> ltrim(const std::basic_string<T> &s,
+                                  UnaryPredicate pred) {
+  auto first = std::find_if_not(s.begin(), s.end(), pred);
   auto last = s.end();
   return std::basic_string<T>(first, last);
 }
 
-template <typename T>
-inline std::basic_string<T> lstrip(const T *s) {
-  return lstrip(std::basic_string<T>(s));
-}
-
-template <typename T>
-inline std::basic_string<T> lstrip(const std::basic_string<T> &s, const T ch) {
-  auto first = std::find_if_not(s.begin(), s.end(), [&](T c) {
-      return ch == c;
-    });
-  auto last = s.end();
-  return std::basic_string<T>(first, last);
-}
-
-template <typename T>
-inline std::basic_string<T> lstrip(const T *s, const T ch) {
-  return lstrip(std::basic_string<T>(s), ch);
-}
-
-template <typename T>
-inline std::basic_string<T> rstrip(const std::basic_string<T> &s) {
-  auto first = s.begin();
-  auto last = std::find_if_not(s.rbegin(), s.rend(), ::isspace).base();
-  return std::basic_string<T>(first, last);
-}
-
-template <typename T>
-inline std::basic_string<T> rstrip(const T *s) {
-  return rstrip(std::basic_string<T>(s));
-}
-
-template <typename T>
-inline std::basic_string<T> rstrip(const std::basic_string<T> &s, const T ch) {
-  auto first = s.begin();
-  auto last = std::find_if_not(s.rbegin(), s.rend(), [&](T c) {
-      return ch == c;
-    }).base();
-  return std::basic_string<T>(first, last);
-}
-
-template <typename T>
-inline std::basic_string<T> rstrip(const T *s, const T ch) {
-  return rstrip(std::basic_string<T>(s), ch);
-}
-
-template <typename T>
-inline std::basic_string<T> strip(const std::basic_string<T> &s) {
-  return lstrip(rstrip(s));
-}
-
-template <typename T>
-inline std::basic_string<T> strip(const T *s) {
-  return lstrip(rstrip(std::basic_string<T>(s)));
-}
-
-template <typename T>
-inline std::basic_string<T> strip(const std::basic_string<T> &s, const T ch) {
-  return lstrip(rstrip(s, ch), ch);
-}
-
-template <typename T>
-inline std::basic_string<T> strip(const T *s, const T ch) {
-  return strip(std::basic_string<T>(s), ch);
+template <typename T, typename UnaryPredicate>
+inline std::basic_string<T> ltrim(const T* s, UnaryPredicate pred) {
+  return ltrim(std::basic_string<T>(s), pred);
 }
 
 template <typename T>
 inline std::basic_string<T> ltrim(const std::basic_string<T> &s) {
-  return lstrip(s);
+  return ltrim(s, [](unsigned char c) { return std::isspace(c); });
 }
 
 template <typename T>
-inline std::basic_string<T> ltrim(const T *s) {
-  return lstrip(s);
+inline std::basic_string<T> ltrim(const T* s) {
+  return ltrim(std::basic_string<T>(s));
 }
 
 template <typename T>
 inline std::basic_string<T> ltrim(const std::basic_string<T> &s, const T ch) {
-  return lstrip(s, ch);
+  return ltrim(s, [&](const T c) { return ch == c; });
 }
 
 template <typename T>
 inline std::basic_string<T> ltrim(const T *s, const T ch) {
-  return lstrip(s, ch);
+  return ltrim(std::basic_string<T>(s), ch);
+}
+
+template <typename T, typename UnaryPredicate>
+inline std::basic_string<T> rtrim(const std::basic_string<T> &s,
+                                  UnaryPredicate pred) {
+  auto first = s.begin();
+  auto last = std::find_if_not(s.rbegin(), s.rend(), pred).base();
+  return std::basic_string<T>(first, last);
+}
+
+template <typename T, typename UnaryPredicate>
+inline std::basic_string<T> rtrim(const T *s, UnaryPredicate pred) {
+  return rtrim(std::basic_string<T>(s), pred);
 }
 
 template <typename T>
 inline std::basic_string<T> rtrim(const std::basic_string<T> &s) {
-  return rstrip(s);
+  return rtrim(s, [](unsigned char c) { return std::isspace(c); });
 }
 
 template <typename T>
 inline std::basic_string<T> rtrim(const T *s) {
-  return rstrip(s);
+  return rtrim(std::basic_string<T>(s));
 }
 
 template <typename T>
 inline std::basic_string<T> rtrim(const std::basic_string<T> &s, const T ch) {
-  return rstrip(s, ch);
+  return rtrim(s, [&](unsigned char c) { return ch == c; });
 }
 
 template <typename T>
 inline std::basic_string<T> rtrim(const T *s, const T ch) {
-  return rstrip(s, ch);
+  return rtrim(std::basic_string<T>(s), ch);
+}
+
+template <typename T, typename UnaryPredicate>
+inline std::basic_string<T> trim(const std::basic_string<T> &s,
+                                 UnaryPredicate pred) {
+  return ltrim(rtrim(s, pred), pred);
+}
+
+template <typename T, typename UnaryPredicate>
+inline std::basic_string<T> trim(const T *s, UnaryPredicate pred) {
+  return trim(std::basic_string<T>(s), pred);
 }
 
 template <typename T>
 inline std::basic_string<T> trim(const std::basic_string<T> &s) {
-  return strip(s);
+  return trim(s, [](unsigned char c) { return std::isspace(c); });
 }
 
 template <typename T>
 inline std::basic_string<T> trim(const T *s) {
-  return strip(s);
+  return trim(std::basic_string<T>(s));
 }
 
 template <typename T>
 inline std::basic_string<T> trim(const std::basic_string<T> &s, const T ch) {
-  return strip(s, ch);
+  return trim(s, [&](unsigned char c) { return ch == c; });
 }
 
 template <typename T>
 inline std::basic_string<T> trim(const T *s, const T ch) {
-  return strip(s, ch);
+  return trim(std::basic_string<T>(s), ch);
+}
+
+template <typename T, typename UnaryPredicate>
+inline std::basic_string<T> lstrip(const std::basic_string<T> &s,
+                                   UnaryPredicate pred) {
+  return ltrim(s, pred);
+}
+
+template <typename T, typename UnaryPredicate>
+inline std::basic_string<T> lstrip(const T* s, UnaryPredicate pred) {
+  return ltrim(s, pred);
+}
+
+template <typename T>
+inline std::basic_string<T> lstrip(const std::basic_string<T> &s) {
+  return ltrim(s);
+}
+
+template <typename T>
+inline std::basic_string<T> lstrip(const T* s) {
+  return ltrim(s);
+}
+
+template <typename T>
+inline std::basic_string<T> lstrip(const std::basic_string<T> &s, const T ch) {
+  return ltrim(s, ch);
+}
+
+template <typename T>
+inline std::basic_string<T> lstrip(const T *s, const T ch) {
+  return ltrim(s, ch);
+}
+
+template <typename T, typename UnaryPredicate>
+inline std::basic_string<T> rstrip(const std::basic_string<T> &s,
+                                   UnaryPredicate pred) {
+  return rtrim(s, pred);
+}
+
+template <typename T, typename UnaryPredicate>
+inline std::basic_string<T> rstrip(const T *s, UnaryPredicate pred) {
+  return rtrim(s, pred);
+}
+
+template <typename T>
+inline std::basic_string<T> rstrip(const std::basic_string<T> &s) {
+  return rtrim(s);
+}
+
+template <typename T>
+inline std::basic_string<T> rstrip(const T *s) {
+  return rtrim(s);
+}
+
+template <typename T>
+inline std::basic_string<T> rstrip(const std::basic_string<T> &s, const T ch) {
+  return rtrim(s, ch);
+}
+
+template <typename T>
+inline std::basic_string<T> rstrip(const T *s, const T ch) {
+  return rtrim(s, ch);
+}
+
+template <typename T, typename UnaryPredicate>
+inline std::basic_string<T> strip(const std::basic_string<T> &s,
+                                  UnaryPredicate pred) {
+  return trim(s, pred);
+}
+
+template <typename T, typename UnaryPredicate>
+inline std::basic_string<T> strip(const T *s, UnaryPredicate pred) {
+  return trim(s, pred);
+}
+
+template <typename T>
+inline std::basic_string<T> strip(const std::basic_string<T> &s) {
+  return trim(s);
+}
+
+template <typename T>
+inline std::basic_string<T> strip(const T *s) {
+  return trim(s);
+}
+
+template <typename T>
+inline std::basic_string<T> strip(const std::basic_string<T> &s, const T ch) {
+  return trim(s, ch);
+}
+
+template <typename T>
+inline std::basic_string<T> strip(const T *s, const T ch) {
+  return trim(s, ch);
 }
 
 template <typename T>
