@@ -84,66 +84,66 @@ class StringTest : public ::testing::Test {
   }
 
   template <typename T>
-  void checkLstrip(const std::basic_string<T> &rawText,
+  void checkLtrim(const std::basic_string<T> &rawText,
                    const T *text,
                    const T *space,
                    const std::basic_string<T> &blank) {
-    EXPECT_EQ(text, snap::string::lstrip(rawText));
-    EXPECT_EQ(text, snap::string::lstrip(text));
-    EXPECT_EQ(blank, snap::string::lstrip(space));
-    EXPECT_EQ(blank, snap::string::lstrip(blank));
+    EXPECT_EQ(text, snap::string::ltrim(rawText));
+    EXPECT_EQ(text, snap::string::ltrim(text));
+    EXPECT_EQ(blank, snap::string::ltrim(space));
+    EXPECT_EQ(blank, snap::string::ltrim(blank));
   }
 
   template <typename T>
-  void checkLstripWithChar(const std::basic_string<T> &rawText,
+  void checkLtrimWithChar(const std::basic_string<T> &rawText,
                            const T *text,
                            const T space,
                            const T blank) {
-    EXPECT_EQ(text, snap::string::lstrip(rawText, space));
-    EXPECT_EQ(text, snap::string::lstrip(text, space));
-    EXPECT_EQ(rawText, snap::string::lstrip(rawText, blank));
+    EXPECT_EQ(text, snap::string::ltrim(rawText, space));
+    EXPECT_EQ(text, snap::string::ltrim(text, space));
+    EXPECT_EQ(rawText, snap::string::ltrim(rawText, blank));
   }
 
   template <typename T>
-  void checkRstrip(const std::basic_string<T> &rawText,
+  void checkRtrim(const std::basic_string<T> &rawText,
                    const T *text,
                    const T *space,
                    const std::basic_string<T> &blank) {
-    EXPECT_EQ(text, snap::string::rstrip(rawText));
-    EXPECT_EQ(text, snap::string::rstrip(text));
-    EXPECT_EQ(blank, snap::string::rstrip(space));
-    EXPECT_EQ(blank, snap::string::rstrip(blank));
+    EXPECT_EQ(text, snap::string::rtrim(rawText));
+    EXPECT_EQ(text, snap::string::rtrim(text));
+    EXPECT_EQ(blank, snap::string::rtrim(space));
+    EXPECT_EQ(blank, snap::string::rtrim(blank));
   }
 
   template <typename T>
-  void checkRstripWithChar(const std::basic_string<T> &rawText,
+  void checkRtrimWithChar(const std::basic_string<T> &rawText,
                            const T *text,
                            const T space,
                            const T blank) {
-    EXPECT_EQ(text, snap::string::rstrip(rawText, space));
-    EXPECT_EQ(text, snap::string::rstrip(text, space));
-    EXPECT_EQ(rawText, snap::string::rstrip(rawText, blank));
+    EXPECT_EQ(text, snap::string::rtrim(rawText, space));
+    EXPECT_EQ(text, snap::string::rtrim(text, space));
+    EXPECT_EQ(rawText, snap::string::rtrim(rawText, blank));
   }
 
   template <typename T>
-  void checkStrip(const std::basic_string<T> &rawText,
+  void checkTrim(const std::basic_string<T> &rawText,
                   const T *text,
                   const T *space,
                   const std::basic_string<T> &blank) {
-    EXPECT_EQ(text, snap::string::strip(rawText));
-    EXPECT_EQ(text, snap::string::strip(text));
-    EXPECT_EQ(blank, snap::string::strip(space));
-    EXPECT_EQ(blank, snap::string::strip(blank));
+    EXPECT_EQ(text, snap::string::trim(rawText));
+    EXPECT_EQ(text, snap::string::trim(text));
+    EXPECT_EQ(blank, snap::string::trim(space));
+    EXPECT_EQ(blank, snap::string::trim(blank));
   }
 
   template <typename T>
-  void checkStripWithChar(const std::basic_string<T> &rawText,
+  void checkTrimWithChar(const std::basic_string<T> &rawText,
                           const T *text,
                           const T space,
                           const T blank) {
-    EXPECT_EQ(text, snap::string::strip(rawText, space));
-    EXPECT_EQ(text, snap::string::strip(text, space));
-    EXPECT_EQ(rawText, snap::string::strip(rawText, blank));
+    EXPECT_EQ(text, snap::string::trim(rawText, space));
+    EXPECT_EQ(text, snap::string::trim(text, space));
+    EXPECT_EQ(rawText, snap::string::trim(rawText, blank));
   }
 
   template <typename T>
@@ -372,244 +372,148 @@ TEST_F(StringTest, testLowercaseForU32String) {
   checkLowercase(UPPERCASE, LOWERCASE, BLANK);
 }
 
-TEST_F(StringTest, testLstripForString) {
+TEST_F(StringTest, testLtrimForString) {
   const std::string RAW_TEXT = " \t\r 테스트";
   const char *TEXT = "테스트";
   const char *SPACE = " ";
   const std::string BLANK = "";
-  checkLstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkLtrim(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testLstripForU8String) {
+TEST_F(StringTest, testLtrimForU8String) {
   const std::string RAW_TEXT = u8" \t\r hello";
   const char *TEXT = u8"hello";
   const char *SPACE = u8" ";
   const std::string BLANK = u8"";
-  checkLstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkLtrim(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testLstripForWString) {
+TEST_F(StringTest, testLtrimForWString) {
   const std::wstring RAW_TEXT = L" \t\r hello";
   const wchar_t *TEXT = L"hello";
   const wchar_t *SPACE = L" ";
   const std::wstring BLANK = L"";
-  checkLstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkLtrim(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testLstripForU16String) {
-  const std::u16string RAW_TEXT = u" \t\r hello";
-  const char16_t *TEXT = u"hello";
-  const char16_t *SPACE = u" ";
-  const std::u16string BLANK = u"";
-  checkLstrip(RAW_TEXT, TEXT, SPACE, BLANK);
-}
-
-TEST_F(StringTest, testLstripForU32String) {
-  const std::u32string RAW_TEXT = U" \t\r hello";
-  const char32_t *TEXT = U"hello";
-  const char32_t *SPACE = U" ";
-  const std::u32string BLANK = U"";
-  checkLstrip(RAW_TEXT, TEXT, SPACE, BLANK);
-}
-
-TEST_F(StringTest, testLstripWithCharForString) {
+TEST_F(StringTest, testLtrimWithCharForString) {
   const std::string RAW_TEXT = "  hello";
   const char *TEXT = "hello";
   const char SPACE = ' ';
   const char BLANK = '\0';
-  checkLstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkLtrimWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testLstripWithCharForU8String) {
+TEST_F(StringTest, testLtrimWithCharForU8String) {
   const std::string RAW_TEXT = u8"  hello";
   const char *TEXT = u8"hello";
   const char SPACE = ' ';
   const char BLANK = '\0';
-  checkLstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkLtrimWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testLstripWithCharForWString) {
+TEST_F(StringTest, testLtrimWithCharForWString) {
   const std::wstring RAW_TEXT = L"  hello";
   const wchar_t *TEXT = L"hello";
   const wchar_t SPACE = L' ';
   const wchar_t BLANK = L'\0';
-  checkLstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkLtrimWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testLstripWithCharForU16String) {
-  const std::u16string RAW_TEXT = u"  hello";
-  const char16_t *TEXT = u"hello";
-  const char16_t SPACE = u' ';
-  const char16_t BLANK = u'\0';
-  checkLstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
-}
-
-TEST_F(StringTest, testLStripWithCharForU32String) {
-  const std::u32string RAW_TEXT = U"  hello";
-  const char32_t *TEXT = U"hello";
-  const char32_t SPACE = U' ';
-  const char32_t BLANK = U'\0';
-  checkLstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
-}
-
-TEST_F(StringTest, testRstripForString) {
+TEST_F(StringTest, testRtrimForString) {
   const std::string RAW_TEXT = "hello \r\t ";
   const char *TEXT = "hello";
   const char *SPACE = " ";
   const std::string BLANK = "";
-  checkRstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkRtrim(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testRstripForU8String) {
+TEST_F(StringTest, testRtrimForU8String) {
   const std::string RAW_TEXT = u8"hello \r\t ";
   const char *TEXT = u8"hello";
   const char *SPACE = u8" ";
   const std::string BLANK = u8"";
-  checkRstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkRtrim(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testRstripForWString) {
+TEST_F(StringTest, testRtrimForWString) {
   const std::wstring RAW_TEXT = L"hello \r\t ";
   const wchar_t *TEXT = L"hello";
   const wchar_t *SPACE = L" ";
   const std::wstring BLANK = L"";
-  checkRstrip(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkRtrim(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testRstripForU16String) {
-  const std::u16string RAW_TEXT = u"hello \r\t ";
-  const char16_t *TEXT = u"hello";
-  const char16_t *SPACE = u" ";
-  const std::u16string BLANK = u"";
-  checkRstrip(RAW_TEXT, TEXT, SPACE, BLANK);
-}
-
-TEST_F(StringTest, testRstripForU32String) {
-  const std::u32string RAW_TEXT = U"hello \r\t ";
-  const char32_t *TEXT = U"hello";
-  const char32_t *SPACE = U" ";
-  const std::u32string BLANK = U"";
-  checkRstrip(RAW_TEXT, TEXT, SPACE, BLANK);
-}
-
-TEST_F(StringTest, testRstripWithCharForString) {
+TEST_F(StringTest, testRtrimWithCharForString) {
   const std::string RAW_TEXT = "hello  ";
   const char *TEXT = "hello";
   const char SPACE = ' ';
   const char BLANK = '\0';
-  checkRstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkRtrimWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testRstripWithCharForU8String) {
+TEST_F(StringTest, testRtrimWithCharForU8String) {
   const std::string RAW_TEXT = u8"hello  ";
   const char *TEXT = u8"hello";
   const char SPACE = ' ';
   const char BLANK = '\0';
-  checkRstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkRtrimWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testRstripWithCharForWString) {
+TEST_F(StringTest, testRtrimWithCharForWString) {
   const std::wstring RAW_TEXT = L"hello  ";
   const wchar_t *TEXT = L"hello";
   const wchar_t SPACE = L' ';
   const wchar_t BLANK = L'\0';
-  checkRstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkRtrimWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testRstripWithCharForU16String) {
-  const std::u16string RAW_TEXT = u"hello  ";
-  const char16_t *TEXT = u"hello";
-  const char16_t SPACE = u' ';
-  const char16_t BLANK = u'\0';
-  checkRstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
-}
-
-TEST_F(StringTest, testRstripWithCharForU32String) {
-  const std::u32string RAW_TEXT = U"hello  ";
-  const char32_t *TEXT = U"hello";
-  const char32_t SPACE = U' ';
-  const char32_t BLANK = U'\0';
-  checkRstripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
-}
-
-TEST_F(StringTest, testStripForString) {
+TEST_F(StringTest, testTrimForString) {
   const std::string RAW_TEXT = "  hello  ";
   const char *TEXT = "hello";
   const char *SPACE = " ";
   const std::string BLANK = "";
-  checkStrip(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkTrim(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testStripForU8String) {
+TEST_F(StringTest, testTrimForU8String) {
   const std::string RAW_TEXT = u8"  hello  ";
   const char *TEXT = u8"hello";
   const char *SPACE = u8" ";
   const std::string BLANK = u8"";
-  checkStrip(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkTrim(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testStripForWString) {
+TEST_F(StringTest, testTrimForWString) {
   const std::wstring RAW_TEXT = L"  hello  ";
   const wchar_t *TEXT = L"hello";
   const wchar_t *SPACE = L" ";
   const std::wstring BLANK = L"";
-  checkStrip(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkTrim(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testStripForU16String) {
-  const std::u16string RAW_TEXT = u"  hello  ";
-  const char16_t *TEXT = u"hello";
-  const char16_t *SPACE = u" ";
-  const std::u16string BLANK = u"";
-  checkStrip(RAW_TEXT, TEXT, SPACE, BLANK);
-}
-
-TEST_F(StringTest, testStripForU32String) {
-  const std::u32string RAW_TEXT = U"  hello  ";
-  const char32_t *TEXT = U"hello";
-  const char32_t *SPACE = U" ";
-  const std::u32string BLANK = U"";
-  checkStrip(RAW_TEXT, TEXT, SPACE, BLANK);
-}
-
-TEST_F(StringTest, testStripWithCharForString) {
+TEST_F(StringTest, testTrimWithCharForString) {
   const std::string RAW_TEXT = "  hello  ";
   const char *TEXT = "hello";
   const char SPACE = ' ';
   const char BLANK = '\0';
-  checkStripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkTrimWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testStripWithCharForU8String) {
+TEST_F(StringTest, testTrimWithCharForU8String) {
   const std::string RAW_TEXT = u8"  hello  ";
   const char *TEXT = u8"hello";
   const char SPACE = ' ';
   const char BLANK = '\0';
-  checkStripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkTrimWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
-TEST_F(StringTest, testStripWithCharForWString) {
+TEST_F(StringTest, testTrimWithCharForWString) {
   const std::wstring RAW_TEXT = L"  hello  ";
   const wchar_t *TEXT = L"hello";
   const wchar_t SPACE = L' ';
   const wchar_t BLANK = L'\0';
-  checkStripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
-}
-
-TEST_F(StringTest, testStripWithCharForU16String) {
-  const std::u16string RAW_TEXT = u"  hello  ";
-  const char16_t *TEXT = u"hello";
-  const char16_t SPACE = u' ';
-  const char16_t BLANK = u'\0';
-  checkStripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
-}
-
-TEST_F(StringTest, testStripWithCharForU32String) {
-  const std::u32string RAW_TEXT = U"  hello  ";
-  const char32_t *TEXT = U"hello";
-  const char32_t SPACE = U' ';
-  const char32_t BLANK = U'\0';
-  checkStripWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
+  checkTrimWithChar(RAW_TEXT, TEXT, SPACE, BLANK);
 }
 
 TEST_F(StringTest, testContainsForString) {
