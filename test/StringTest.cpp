@@ -191,7 +191,6 @@ class StringTest : public ::testing::Test {
   }
 };
 
-
 TEST_F(StringTest, testStartsWithForString) {
   const std::string TEXT = "hello world";
   const char *PREFIX = "hello";

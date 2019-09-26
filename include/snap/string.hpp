@@ -41,7 +41,8 @@ namespace string {
 template <typename T>
 inline bool startsWith(const std::basic_string<T> &haystack,
                        const std::basic_string<T> &needle) {
-  return std::equal(needle.begin(), needle.end(), haystack.begin());
+  return (haystack.size() >= needle.size()) &&
+      std::equal(needle.begin(), needle.end(), haystack.begin());
 }
 
 template <typename T>
@@ -63,7 +64,8 @@ inline bool startsWith(const T *haystack, const T *needle) {
 template <typename T>
 inline bool endsWith(const std::basic_string<T> &haystack,
                      const std::basic_string<T> &needle) {
-  return std::equal(needle.rbegin(), needle.rend(), haystack.rbegin());
+  return (haystack.size() >= needle.size()) &&
+      std::equal(needle.rbegin(), needle.rend(), haystack.rbegin());
 }
 
 template <typename T>
