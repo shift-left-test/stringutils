@@ -215,22 +215,6 @@ TEST_F(StringTest, testStartsWithForWString) {
   checkStartsWith(TEXT, PREFIX, SUFFIX, BLANK);
 }
 
-TEST_F(StringTest, testStartsWithForU16String) {
-  const std::u16string TEXT = u"hello world";
-  const char16_t *PREFIX = u"hello";
-  const char16_t *SUFFIX = u"world";
-  const std::u16string BLANK = u"";
-  checkStartsWith(TEXT, PREFIX, SUFFIX, BLANK);
-}
-
-TEST_F(StringTest, testStartsWithForU32String) {
-  const std::u32string TEXT = U"hello world";
-  const char32_t *PREFIX = U"hello";
-  const char32_t *SUFFIX = U"world";
-  const std::u32string BLANK = U"";
-  checkStartsWith(TEXT, PREFIX, SUFFIX, BLANK);
-}
-
 TEST_F(StringTest, testEndsWithForString) {
   const std::string TEXT = "hello world";
   const char *PREFIX = "hello";
@@ -255,22 +239,6 @@ TEST_F(StringTest, testEndsWithForWString) {
   checkEndsWith(TEXT, PREFIX, SUFFIX, BLANK);
 }
 
-TEST_F(StringTest, testEndsWithForU16String) {
-  const std::u16string TEXT = u"hello world";
-  const char16_t *PREFIX = u"hello";
-  const char16_t *SUFFIX = u"world";
-  const std::u16string BLANK = u"";
-  checkEndsWith(TEXT, PREFIX, SUFFIX, BLANK);
-}
-
-TEST_F(StringTest, testEndsWithForU32String) {
-  const std::u32string TEXT = U"hello world";
-  const char32_t *PREFIX = U"hello";
-  const char32_t *SUFFIX = U"world";
-  const std::u32string BLANK = U"";
-  checkEndsWith(TEXT, PREFIX, SUFFIX, BLANK);
-}
-
 TEST_F(StringTest, testTransformForString) {
   const std::string UPPERCASE = "HELLO WORLD";
   const char *LOWERCASE = "hello world";
@@ -286,18 +254,6 @@ TEST_F(StringTest, testTransformForU8String) {
 TEST_F(StringTest, testTransformForWString) {
   const std::wstring UPPERCASE = L"HELLO WORLD";
   const wchar_t *LOWERCASE = L"hello world";
-  checkTransform(UPPERCASE, LOWERCASE);
-}
-
-TEST_F(StringTest, testTransformForU16String) {
-  const std::u16string UPPERCASE = u"HELLO WORLD";
-  const char16_t *LOWERCASE = u"hello world";
-  checkTransform(UPPERCASE, LOWERCASE);
-}
-
-TEST_F(StringTest, testTransformForU32String) {
-  const std::u32string UPPERCASE = U"HELLO WORLD";
-  const char32_t *LOWERCASE = U"hello world";
   checkTransform(UPPERCASE, LOWERCASE);
 }
 
@@ -322,20 +278,6 @@ TEST_F(StringTest, testUppercaseForWString) {
   checkUppercase(UPPERCASE, LOWERCASE, BLANK);
 }
 
-TEST_F(StringTest, testUppercaseForU16String) {
-  const std::u16string UPPERCASE = u"HELLO WORLD";
-  const char16_t *LOWERCASE = u"hello world";
-  const char16_t *BLANK = u"";
-  checkUppercase(UPPERCASE, LOWERCASE, BLANK);
-}
-
-TEST_F(StringTest, testUppercaseForU32String) {
-  const std::u32string UPPERCASE = U"HELLO WORLD";
-  const char32_t *LOWERCASE = U"hello world";
-  const char32_t *BLANK = U"";
-  checkUppercase(UPPERCASE, LOWERCASE, BLANK);
-}
-
 TEST_F(StringTest, testLowercaseForString) {
   const std::string UPPERCASE = "HELLO WORLD";
   const char *LOWERCASE = "hello world";
@@ -354,20 +296,6 @@ TEST_F(StringTest, testLowercaseForWString) {
   const std::wstring UPPERCASE = L"HELLO WORLD";
   const wchar_t *LOWERCASE = L"hello world";
   const wchar_t *BLANK = L"";
-  checkLowercase(UPPERCASE, LOWERCASE, BLANK);
-}
-
-TEST_F(StringTest, testLowercaseForU16String) {
-  const std::u16string UPPERCASE = u"HELLO WORLD";
-  const char16_t *LOWERCASE = u"hello world";
-  const char16_t *BLANK = u"";
-  checkLowercase(UPPERCASE, LOWERCASE, BLANK);
-}
-
-TEST_F(StringTest, testLowercaseForU32String) {
-  const std::u32string UPPERCASE = U"HELLO WORLD";
-  const char32_t *LOWERCASE = U"hello world";
-  const char32_t *BLANK = U"";
   checkLowercase(UPPERCASE, LOWERCASE, BLANK);
 }
 
@@ -548,28 +476,6 @@ TEST_F(StringTest, testContainsForWString) {
   checkContains(TEXT, CAPITALIZED, PREFIX, SUFFIX, SPACE, BLANK, WEIRD);
 }
 
-TEST_F(StringTest, testContainsForU16String) {
-  const std::u16string TEXT = u"hello world";
-  const std::u16string CAPITALIZED = u"HELLO WORLD";
-  const char16_t *PREFIX = u"hello";
-  const char16_t *SUFFIX = u"world";
-  const char16_t *SPACE = u" ";
-  const char16_t *BLANK = u"";
-  const char16_t *WEIRD = u"?";
-  checkContains(TEXT, CAPITALIZED, PREFIX, SUFFIX, SPACE, BLANK, WEIRD);
-}
-
-TEST_F(StringTest, testContainsForU32String) {
-  const std::u32string TEXT = U"hello world";
-  const std::u32string CAPITALIZED = U"HELLO WORLD";
-  const char32_t *PREFIX = U"hello";
-  const char32_t *SUFFIX = U"world";
-  const char32_t *SPACE = U" ";
-  const char32_t *BLANK = U"";
-  const char32_t *WEIRD = U"?";
-  checkContains(TEXT, CAPITALIZED, PREFIX, SUFFIX, SPACE, BLANK, WEIRD);
-}
-
 TEST_F(StringTest, replaceWithCharForString) {
   const std::string RAW_TEXT = "hello_world";
   const char *TEXT = "hello world";
@@ -591,22 +497,6 @@ TEST_F(StringTest, replaceWithCharForWString) {
   const wchar_t *TEXT = L"hello world";
   const wchar_t SPACE = L' ';
   const wchar_t DELIM = L'_';
-  checkReplaceWithChar(RAW_TEXT, TEXT, SPACE, DELIM);
-}
-
-TEST_F(StringTest, replaceWithCharForU16String) {
-  const std::u16string RAW_TEXT = u"hello_world";
-  const char16_t *TEXT = u"hello world";
-  const char16_t SPACE = u' ';
-  const char16_t DELIM = u'_';
-  checkReplaceWithChar(RAW_TEXT, TEXT, SPACE, DELIM);
-}
-
-TEST_F(StringTest, replaceWithCharForU32String) {
-  const std::u32string RAW_TEXT = U"hello_world";
-  const char32_t *TEXT = U"hello world";
-  const char32_t SPACE = U' ';
-  const char32_t DELIM = U'_';
   checkReplaceWithChar(RAW_TEXT, TEXT, SPACE, DELIM);
 }
 
@@ -634,24 +524,6 @@ TEST_F(StringTest, replaceWithStringForWString) {
   const wchar_t *SPACE = L"  ";
   const wchar_t *DELIM = L"__";
   const wchar_t *BLANK = L"";
-  checkReplaceWithString(RAW_TEXT, TEXT, SPACE, DELIM, BLANK);
-}
-
-TEST_F(StringTest, replaceWithStringForU16String) {
-  const std::u16string RAW_TEXT = u" hello__world ";
-  const char16_t *TEXT = u" hello  world ";
-  const char16_t *SPACE = u"  ";
-  const char16_t *DELIM = u"__";
-  const char16_t *BLANK = u"";
-  checkReplaceWithString(RAW_TEXT, TEXT, SPACE, DELIM, BLANK);
-}
-
-TEST_F(StringTest, replaceWithStringForU32String) {
-  const std::u32string RAW_TEXT = U" hello__world ";
-  const char32_t *TEXT = U" hello  world ";
-  const char32_t *SPACE = U"  ";
-  const char32_t *DELIM = U"__";
-  const char32_t *BLANK = U"";
   checkReplaceWithString(RAW_TEXT, TEXT, SPACE, DELIM, BLANK);
 }
 
@@ -691,7 +563,7 @@ TEST_F(StringTest, splitForString) {
   EXPECT_EQ(SECOND, actual[1]);
 }
 
-TEST_F(StringTest, splitVariousTexts) {
+TEST_F(StringTest, splitVariousStrings) {
   EXPECT_EQ(0, snap::string::split("", ' ').size());
   EXPECT_EQ(0, snap::string::split("\0", '\0').size());
   EXPECT_EQ(1, snap::string::split(" ", '\0').size());
@@ -723,31 +595,7 @@ TEST_F(StringTest, splitForWString) {
   EXPECT_EQ(SECOND, actual[1]);
 }
 
-TEST_F(StringTest, splitForU16String) {
-  const char16_t *TEXT = u"hello world";
-  const char16_t TOKEN = ' ';
-  const char16_t *FIRST = u"hello";
-  const char16_t *SECOND = u"world";
-
-  auto actual = snap::string::split(TEXT, TOKEN);
-  ASSERT_EQ(2, actual.size());
-  EXPECT_EQ(FIRST, actual[0]);
-  EXPECT_EQ(SECOND, actual[1]);
-}
-
-TEST_F(StringTest, splitForU32String) {
-  const char32_t *TEXT = U"hello world";
-  const char32_t TOKEN = ' ';
-  const char32_t *FIRST = U"hello";
-  const char32_t *SECOND = U"world";
-
-  auto actual = snap::string::split(TEXT, TOKEN);
-  ASSERT_EQ(2, actual.size());
-  EXPECT_EQ(FIRST, actual[0]);
-  EXPECT_EQ(SECOND, actual[1]);
-}
-
-TEST_F(StringTest, joinVariousTexts) {
+TEST_F(StringTest, joinVariousStrings) {
   EXPECT_EQ("", snap::string::join({"", ""}, ""));
   EXPECT_EQ("\0", snap::string::join({"", ""}, "\0"));
   EXPECT_EQ("", snap::string::join({"\0", "\0"}, "\0"));
@@ -774,22 +622,6 @@ TEST_F(StringTest, joinForWString) {
   const wchar_t *SECOND = L"world";
   const wchar_t *DELIM = L" ";
   const wchar_t *EXPECTED = L"hello world";
-  EXPECT_EQ(EXPECTED, snap::string::join({FIRST, SECOND}, DELIM));
-}
-
-TEST_F(StringTest, joinForU16String) {
-  const char16_t *FIRST = u"hello";
-  const char16_t *SECOND = u"world";
-  const char16_t *DELIM = u" ";
-  const char16_t *EXPECTED = u"hello world";
-  EXPECT_EQ(EXPECTED, snap::string::join({FIRST, SECOND}, DELIM));
-}
-
-TEST_F(StringTest, joinForU32String) {
-  const char32_t *FIRST = U"hello";
-  const char32_t *SECOND = U"world";
-  const char32_t *DELIM = U" ";
-  const char32_t *EXPECTED = U"hello world";
   EXPECT_EQ(EXPECTED, snap::string::join({FIRST, SECOND}, DELIM));
 }
 
