@@ -296,6 +296,72 @@ inline std::basic_string<T> reverse(const T* s) {
   return reverse(std::basic_string<T>(s));
 }
 
+template <typename T>
+inline std::basic_string<T> translate(std::basic_string<T> s,
+                                      const std::basic_string<T>& from,
+                                      const std::basic_string<T>& to) {
+  auto func = [&](const T ch) {
+    auto length = std::min(from.size(), to.size());
+    for (auto i = 0; i < length; i++) {
+      if (ch == from[i]) {
+        return to[i];
+      }
+    } return ch;
+  };
+  std::transform(s.begin(), s.end(), s.begin(), func);
+  return s;
+}
+
+template <typename T>
+inline std::basic_string<T> translate(const std::basic_string<T>& s,
+                                      const std::basic_string<T>& from,
+                                      const T* to) {
+  return translate(s, from, std::basic_string<T>(to));
+}
+
+template <typename T>
+inline std::basic_string<T> translate(const std::basic_string<T>& s,
+                                      const T* from,
+                                      const std::basic_string<T>& to) {
+  return translate(s, std::basic_string<T>(from), to);
+}
+
+template <typename T>
+inline std::basic_string<T> translate(const T* s,
+                                      const std::basic_string<T>& from,
+                                      const std::basic_string<T>& to) {
+  return translate(std::basic_string<T>(s), from, to);
+}
+
+template <typename T>
+inline std::basic_string<T> translate(const std::basic_string<T>& s,
+                                      const T* from,
+                                      const T* to) {
+  return translate(s, std::basic_string<T>(from), std::basic_string<T>(to));
+}
+
+template <typename T>
+inline std::basic_string<T> translate(const T* s,
+                                      const std::basic_string<T>& from,
+                                      const T* to) {
+  return translate(std::basic_string<T>(s), from, std::basic_string<T>(to));
+}
+
+template <typename T>
+inline std::basic_string<T> translate(const T* s,
+                                      const T* from,
+                                      const std::basic_string<T>& to) {
+  return translate(std::basic_string<T>(s), std::basic_string<T>(from), to);
+}
+
+template <typename T>
+inline std::basic_string<T> translate(const T* s,
+                                      const T* from,
+                                      const T* to) {
+  return translate(std::basic_string<T>(s),
+                   std::basic_string<T>(from),
+                   std::basic_string<T>(to));
+}
 
 namespace internal {
 

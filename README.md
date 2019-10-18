@@ -1,6 +1,6 @@
 # snap
 
-A header-only library which provides a series of utility functions for C++ projects
+A simple library which provides a series of utility functions for C++ projects
 
 ### Requirements
 

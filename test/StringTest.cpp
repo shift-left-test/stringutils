@@ -630,3 +630,17 @@ TEST_F(StringTest, reverseStrings) {
   EXPECT_EQ(u8"olleh", snap::string::reverse(u8"hello"));
   EXPECT_EQ(L"olleh", snap::string::reverse(L"hello"));
 }
+
+TEST_F(StringTest, translateStrings) {
+  EXPECT_EQ("h1ll2", snap::string::translate("hello", "eolz", "12"));
+  EXPECT_EQ("hello", snap::string::translate("hello", "eolz", ""));
+  EXPECT_EQ("hello", snap::string::translate("hello", "", "12"));
+
+  EXPECT_EQ(u8"h1ll2", snap::string::translate(u8"hello", u8"eolz", u8"12"));
+  EXPECT_EQ(u8"hello", snap::string::translate(u8"hello", u8"eolz", u8""));
+  EXPECT_EQ(u8"hello", snap::string::translate(u8"hello", u8"", u8"12"));
+
+  EXPECT_EQ(L"h1ll2", snap::string::translate(L"hello", L"eolz", L"12"));
+  EXPECT_EQ(L"hello", snap::string::translate(L"hello", L"eolz", L""));
+  EXPECT_EQ(L"hello", snap::string::translate(L"hello", L"", L"12"));
+}
