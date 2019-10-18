@@ -286,6 +286,16 @@ inline std::basic_string<T> replace(const T *s,
                  std::basic_string<T>(to));
 }
 
+template <typename T>
+inline std::basic_string<T> reverse(const std::basic_string<T>& s) {
+  return std::basic_string<T>(s.rbegin(), s.rend());
+}
+
+template <typename T>
+inline std::basic_string<T> reverse(const T* s) {
+  return reverse(std::basic_string<T>(s));
+}
+
 
 namespace internal {
 

@@ -792,3 +792,9 @@ TEST_F(StringTest, joinForU32String) {
   const char32_t *EXPECTED = U"hello world";
   EXPECT_EQ(EXPECTED, snap::string::join({FIRST, SECOND}, DELIM));
 }
+
+TEST_F(StringTest, reverseStrings) {
+  EXPECT_EQ("olleh", snap::string::reverse("hello"));
+  EXPECT_EQ(u8"olleh", snap::string::reverse(u8"hello"));
+  EXPECT_EQ(L"olleh", snap::string::reverse(L"hello"));
+}
