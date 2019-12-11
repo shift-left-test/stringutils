@@ -22,8 +22,8 @@
   SOFTWARE.
 */
 
-#ifndef INCLUDE_SNAP_STRING_HPP_
-#define INCLUDE_SNAP_STRING_HPP_
+#ifndef INCLUDE_UTIL_STRING_HPP_
+#define INCLUDE_UTIL_STRING_HPP_
 
 #include <cctype>
 #include <cstddef>
@@ -34,7 +34,7 @@
 #include <string>
 #include <vector>
 
-namespace snap {
+namespace util {
 
 namespace string {
 
@@ -448,6 +448,6 @@ join(const std::vector<std::basic_string<T>> &tokens, const T *delim) {
 
 }  // namespace string
 
-}  // namespace snap
+}  // namespace util
 
-#endif  // INCLUDE_SNAP_STRING_HPP_
+#endif  // INCLUDE_UTIL_STRING_HPP_

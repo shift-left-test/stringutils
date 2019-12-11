@@ -1,4 +1,4 @@
 build_interface(
-  NAME snap
+  NAME util
   PUBLIC_HEADERS ${CMAKE_SOURCE_DIR}/include
 )

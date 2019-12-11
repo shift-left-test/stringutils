@@ -1,4 +1,4 @@
-# snap
+# util
 
 A simple library which provides a series of utility functions for C++ projects
 

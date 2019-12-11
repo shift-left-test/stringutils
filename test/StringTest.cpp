@@ -25,7 +25,7 @@
 #include <gtest/gtest.h>
 #include <cctype>
 #include <string>
-#include "snap/string.hpp"
+#include "util/string.hpp"
 
 
 class StringTest : public ::testing::Test {
@@ -35,13 +35,13 @@ class StringTest : public ::testing::Test {
                        const T *prefix,
                        const T *suffix,
                        const std::basic_string<T> &blank) {
-    EXPECT_TRUE(snap::string::startsWith(text, text));
-    EXPECT_TRUE(snap::string::startsWith(text, prefix));
-    EXPECT_TRUE(snap::string::startsWith(text, blank));
-    EXPECT_TRUE(snap::string::startsWith(blank, blank));
-    EXPECT_FALSE(snap::string::startsWith(prefix, text));
-    EXPECT_FALSE(snap::string::startsWith(text, suffix));
-    EXPECT_FALSE(snap::string::startsWith(blank, text));
+    EXPECT_TRUE(util::string::startsWith(text, text));
+    EXPECT_TRUE(util::string::startsWith(text, prefix));
+    EXPECT_TRUE(util::string::startsWith(text, blank));
+    EXPECT_TRUE(util::string::startsWith(blank, blank));
+    EXPECT_FALSE(util::string::startsWith(prefix, text));
+    EXPECT_FALSE(util::string::startsWith(text, suffix));
+    EXPECT_FALSE(util::string::startsWith(blank, text));
   }
 
   template <typename T>
@@ -49,38 +49,38 @@ class StringTest : public ::testing::Test {
                      const T *prefix,
                      const T *suffix,
                      const std::basic_string<T> &blank) {
-    EXPECT_TRUE(snap::string::endsWith(text, text));
-    EXPECT_TRUE(snap::string::endsWith(text, suffix));
-    EXPECT_TRUE(snap::string::endsWith(text, blank));
-    EXPECT_TRUE(snap::string::endsWith(blank, blank));
-    EXPECT_FALSE(snap::string::endsWith(prefix, text));
-    EXPECT_FALSE(snap::string::endsWith(text, prefix));
-    EXPECT_FALSE(snap::string::endsWith(blank, text));
+    EXPECT_TRUE(util::string::endsWith(text, text));
+    EXPECT_TRUE(util::string::endsWith(text, suffix));
+    EXPECT_TRUE(util::string::endsWith(text, blank));
+    EXPECT_TRUE(util::string::endsWith(blank, blank));
+    EXPECT_FALSE(util::string::endsWith(prefix, text));
+    EXPECT_FALSE(util::string::endsWith(text, prefix));
+    EXPECT_FALSE(util::string::endsWith(blank, text));
   }
 
   template <typename T>
   void checkTransform(const std::basic_string<T> &uppercase,
                       const T *lowercase) {
-    EXPECT_EQ(uppercase, snap::string::transform(uppercase, ::toupper));
-    EXPECT_EQ(uppercase, snap::string::transform(lowercase, ::toupper));
+    EXPECT_EQ(uppercase, util::string::transform(uppercase, ::toupper));
+    EXPECT_EQ(uppercase, util::string::transform(lowercase, ::toupper));
   }
 
   template <typename T>
   void checkUppercase(const std::basic_string<T> &uppercase,
                       const T *lowercase,
                       const T *blank) {
-    EXPECT_EQ(uppercase, snap::string::uppercase(uppercase));
-    EXPECT_EQ(uppercase, snap::string::uppercase(lowercase));
-    EXPECT_EQ(blank, snap::string::uppercase(blank));
+    EXPECT_EQ(uppercase, util::string::uppercase(uppercase));
+    EXPECT_EQ(uppercase, util::string::uppercase(lowercase));
+    EXPECT_EQ(blank, util::string::uppercase(blank));
   }
 
   template <typename T>
   void checkLowercase(const std::basic_string<T> &uppercase,
                       const T *lowercase,
                       const T *blank) {
-    EXPECT_EQ(lowercase, snap::string::lowercase(uppercase));
-    EXPECT_EQ(lowercase, snap::string::lowercase(lowercase));
-    EXPECT_EQ(blank, snap::string::lowercase(blank));
+    EXPECT_EQ(lowercase, util::string::lowercase(uppercase));
+    EXPECT_EQ(lowercase, util::string::lowercase(lowercase));
+    EXPECT_EQ(blank, util::string::lowercase(blank));
   }
 
   template <typename T>
@@ -88,10 +88,10 @@ class StringTest : public ::testing::Test {
                    const T *text,
                    const T *space,
                    const std::basic_string<T> &blank) {
-    EXPECT_EQ(text, snap::string::ltrim(rawText));
-    EXPECT_EQ(text, snap::string::ltrim(text));
-    EXPECT_EQ(blank, snap::string::ltrim(space));
-    EXPECT_EQ(blank, snap::string::ltrim(blank));
+    EXPECT_EQ(text, util::string::ltrim(rawText));
+    EXPECT_EQ(text, util::string::ltrim(text));
+    EXPECT_EQ(blank, util::string::ltrim(space));
+    EXPECT_EQ(blank, util::string::ltrim(blank));
   }
 
   template <typename T>
@@ -99,9 +99,9 @@ class StringTest : public ::testing::Test {
                            const T *text,
                            const T space,
                            const T blank) {
-    EXPECT_EQ(text, snap::string::ltrim(rawText, space));
-    EXPECT_EQ(text, snap::string::ltrim(text, space));
-    EXPECT_EQ(rawText, snap::string::ltrim(rawText, blank));
+    EXPECT_EQ(text, util::string::ltrim(rawText, space));
+    EXPECT_EQ(text, util::string::ltrim(text, space));
+    EXPECT_EQ(rawText, util::string::ltrim(rawText, blank));
   }
 
   template <typename T>
@@ -109,10 +109,10 @@ class StringTest : public ::testing::Test {
                    const T *text,
                    const T *space,
                    const std::basic_string<T> &blank) {
-    EXPECT_EQ(text, snap::string::rtrim(rawText));
-    EXPECT_EQ(text, snap::string::rtrim(text));
-    EXPECT_EQ(blank, snap::string::rtrim(space));
-    EXPECT_EQ(blank, snap::string::rtrim(blank));
+    EXPECT_EQ(text, util::string::rtrim(rawText));
+    EXPECT_EQ(text, util::string::rtrim(text));
+    EXPECT_EQ(blank, util::string::rtrim(space));
+    EXPECT_EQ(blank, util::string::rtrim(blank));
   }
 
   template <typename T>
@@ -120,9 +120,9 @@ class StringTest : public ::testing::Test {
                            const T *text,
                            const T space,
                            const T blank) {
-    EXPECT_EQ(text, snap::string::rtrim(rawText, space));
-    EXPECT_EQ(text, snap::string::rtrim(text, space));
-    EXPECT_EQ(rawText, snap::string::rtrim(rawText, blank));
+    EXPECT_EQ(text, util::string::rtrim(rawText, space));
+    EXPECT_EQ(text, util::string::rtrim(text, space));
+    EXPECT_EQ(rawText, util::string::rtrim(rawText, blank));
   }
 
   template <typename T>
@@ -130,10 +130,10 @@ class StringTest : public ::testing::Test {
                   const T *text,
                   const T *space,
                   const std::basic_string<T> &blank) {
-    EXPECT_EQ(text, snap::string::trim(rawText));
-    EXPECT_EQ(text, snap::string::trim(text));
-    EXPECT_EQ(blank, snap::string::trim(space));
-    EXPECT_EQ(blank, snap::string::trim(blank));
+    EXPECT_EQ(text, util::string::trim(rawText));
+    EXPECT_EQ(text, util::string::trim(text));
+    EXPECT_EQ(blank, util::string::trim(space));
+    EXPECT_EQ(blank, util::string::trim(blank));
   }
 
   template <typename T>
@@ -141,9 +141,9 @@ class StringTest : public ::testing::Test {
                           const T *text,
                           const T space,
                           const T blank) {
-    EXPECT_EQ(text, snap::string::trim(rawText, space));
-    EXPECT_EQ(text, snap::string::trim(text, space));
-    EXPECT_EQ(rawText, snap::string::trim(rawText, blank));
+    EXPECT_EQ(text, util::string::trim(rawText, space));
+    EXPECT_EQ(text, util::string::trim(text, space));
+    EXPECT_EQ(rawText, util::string::trim(rawText, blank));
   }
 
   template <typename T>
@@ -154,15 +154,15 @@ class StringTest : public ::testing::Test {
                      const T *space,
                      const T *blank,
                      const T *weird) {
-    EXPECT_TRUE(snap::string::contains(text, text));
-    EXPECT_TRUE(snap::string::contains(text, prefix));
-    EXPECT_TRUE(snap::string::contains(text, suffix));
-    EXPECT_TRUE(snap::string::contains(text, blank));
-    EXPECT_FALSE(snap::string::contains(text, capitalized));
-    EXPECT_FALSE(snap::string::contains(prefix, text));
-    EXPECT_FALSE(snap::string::contains(suffix, text));
-    EXPECT_FALSE(snap::string::contains(prefix, suffix));
-    EXPECT_FALSE(snap::string::contains(text, weird));
+    EXPECT_TRUE(util::string::contains(text, text));
+    EXPECT_TRUE(util::string::contains(text, prefix));
+    EXPECT_TRUE(util::string::contains(text, suffix));
+    EXPECT_TRUE(util::string::contains(text, blank));
+    EXPECT_FALSE(util::string::contains(text, capitalized));
+    EXPECT_FALSE(util::string::contains(prefix, text));
+    EXPECT_FALSE(util::string::contains(suffix, text));
+    EXPECT_FALSE(util::string::contains(prefix, suffix));
+    EXPECT_FALSE(util::string::contains(text, weird));
   }
 
   template <typename T>
@@ -170,10 +170,10 @@ class StringTest : public ::testing::Test {
                             const T *text,
                             const T space,
                             const T delim) {
-    EXPECT_EQ(text, snap::string::replace(rawText, delim, space));
-    EXPECT_EQ(text, snap::string::replace(text, delim, space));
-    EXPECT_EQ(rawText, snap::string::replace(text, space, delim));
-    EXPECT_EQ(rawText, snap::string::replace(rawText, space, delim));
+    EXPECT_EQ(text, util::string::replace(rawText, delim, space));
+    EXPECT_EQ(text, util::string::replace(text, delim, space));
+    EXPECT_EQ(rawText, util::string::replace(text, space, delim));
+    EXPECT_EQ(rawText, util::string::replace(rawText, space, delim));
   }
 
   template <typename T>
@@ -182,12 +182,12 @@ class StringTest : public ::testing::Test {
                               const T *space,
                               const T *delim,
                               const T *blank) {
-    EXPECT_EQ(text, snap::string::replace(rawText, delim, space));
-    EXPECT_EQ(text, snap::string::replace(text, delim, space));
-    EXPECT_EQ(rawText, snap::string::replace(text, space, delim));
-    EXPECT_EQ(rawText, snap::string::replace(rawText, space, delim));
-    EXPECT_EQ(blank, snap::string::replace(blank, space, delim));
-    EXPECT_EQ(rawText, snap::string::replace(rawText, blank, space));
+    EXPECT_EQ(text, util::string::replace(rawText, delim, space));
+    EXPECT_EQ(text, util::string::replace(text, delim, space));
+    EXPECT_EQ(rawText, util::string::replace(text, space, delim));
+    EXPECT_EQ(rawText, util::string::replace(rawText, space, delim));
+    EXPECT_EQ(blank, util::string::replace(blank, space, delim));
+    EXPECT_EQ(rawText, util::string::replace(rawText, blank, space));
   }
 };
 
@@ -532,7 +532,7 @@ TEST_F(StringTest, formatWithArgsForString) {
   const std::string ARG1 = "hello";
   const char *ARG2 = "world";
   const char *EXPECTED = "hello world";
-  EXPECT_EQ(EXPECTED, snap::string::format(FORMAT, ARG1, ARG2));
+  EXPECT_EQ(EXPECTED, util::string::format(FORMAT, ARG1, ARG2));
 }
 
 TEST_F(StringTest, formatWithArgsForU8String) {
@@ -540,7 +540,7 @@ TEST_F(StringTest, formatWithArgsForU8String) {
   const std::string ARG1 = u8"hello";
   const char *ARG2 = u8"world";
   const char *EXPECTED = u8"hello world";
-  EXPECT_EQ(EXPECTED, snap::string::format(FORMAT, ARG1, ARG2));
+  EXPECT_EQ(EXPECTED, util::string::format(FORMAT, ARG1, ARG2));
 }
 
 TEST_F(StringTest, formatWithArgsForWString) {
@@ -548,7 +548,7 @@ TEST_F(StringTest, formatWithArgsForWString) {
   const std::wstring ARG1 = L"hello";
   const wchar_t *ARG2 = L"world";
   const wchar_t *EXPECTED = L"hello world";
-  EXPECT_EQ(EXPECTED, snap::string::format(FORMAT, ARG1, ARG2));
+  EXPECT_EQ(EXPECTED, util::string::format(FORMAT, ARG1, ARG2));
 }
 
 TEST_F(StringTest, splitForString) {
@@ -557,18 +557,18 @@ TEST_F(StringTest, splitForString) {
   const char *FIRST = "hello";
   const char *SECOND = "world";
 
-  auto actual = snap::string::split(TEXT, TOKEN);
+  auto actual = util::string::split(TEXT, TOKEN);
   ASSERT_EQ(2, actual.size());
   EXPECT_EQ(FIRST, actual[0]);
   EXPECT_EQ(SECOND, actual[1]);
 }
 
 TEST_F(StringTest, splitVariousStrings) {
-  EXPECT_EQ(0, snap::string::split("", ' ').size());
-  EXPECT_EQ(0, snap::string::split("\0", '\0').size());
-  EXPECT_EQ(1, snap::string::split(" ", '\0').size());
-  EXPECT_EQ(1, snap::string::split(" ", ' ').size());
-  EXPECT_EQ(1, snap::string::split("hello", ' ').size());
+  EXPECT_EQ(0, util::string::split("", ' ').size());
+  EXPECT_EQ(0, util::string::split("\0", '\0').size());
+  EXPECT_EQ(1, util::string::split(" ", '\0').size());
+  EXPECT_EQ(1, util::string::split(" ", ' ').size());
+  EXPECT_EQ(1, util::string::split("hello", ' ').size());
 }
 
 TEST_F(StringTest, splitForU8String) {
@@ -577,7 +577,7 @@ TEST_F(StringTest, splitForU8String) {
   const char *FIRST = u8"hello";
   const char *SECOND = u8"world";
 
-  auto actual = snap::string::split(TEXT, TOKEN);
+  auto actual = util::string::split(TEXT, TOKEN);
   ASSERT_EQ(2, actual.size());
   EXPECT_EQ(FIRST, actual[0]);
   EXPECT_EQ(SECOND, actual[1]);
@@ -589,16 +589,16 @@ TEST_F(StringTest, splitForWString) {
   const wchar_t *FIRST = L"hello";
   const wchar_t *SECOND = L"world";
 
-  auto actual = snap::string::split(TEXT, TOKEN);
+  auto actual = util::string::split(TEXT, TOKEN);
   ASSERT_EQ(2, actual.size());
   EXPECT_EQ(FIRST, actual[0]);
   EXPECT_EQ(SECOND, actual[1]);
 }
 
 TEST_F(StringTest, joinVariousStrings) {
-  EXPECT_EQ("", snap::string::join({"", ""}, ""));
-  EXPECT_EQ("\0", snap::string::join({"", ""}, "\0"));
-  EXPECT_EQ("", snap::string::join({"\0", "\0"}, "\0"));
+  EXPECT_EQ("", util::string::join({"", ""}, ""));
+  EXPECT_EQ("\0", util::string::join({"", ""}, "\0"));
+  EXPECT_EQ("", util::string::join({"\0", "\0"}, "\0"));
 }
 
 TEST_F(StringTest, joinForString) {
@@ -606,7 +606,7 @@ TEST_F(StringTest, joinForString) {
   const char *SECOND = "world";
   const char *DELIM = " ";
   const char *EXPECTED = "hello world";
-  EXPECT_EQ(EXPECTED, snap::string::join({FIRST, SECOND}, DELIM));
+  EXPECT_EQ(EXPECTED, util::string::join({FIRST, SECOND}, DELIM));
 }
 
 TEST_F(StringTest, joinForU8String) {
@@ -614,7 +614,7 @@ TEST_F(StringTest, joinForU8String) {
   const char *SECOND = u8"world";
   const char *DELIM = u8" ";
   const char *EXPECTED = u8"hello world";
-  EXPECT_EQ(EXPECTED, snap::string::join({FIRST, SECOND}, DELIM));
+  EXPECT_EQ(EXPECTED, util::string::join({FIRST, SECOND}, DELIM));
 }
 
 TEST_F(StringTest, joinForWString) {
@@ -622,25 +622,25 @@ TEST_F(StringTest, joinForWString) {
   const wchar_t *SECOND = L"world";
   const wchar_t *DELIM = L" ";
   const wchar_t *EXPECTED = L"hello world";
-  EXPECT_EQ(EXPECTED, snap::string::join({FIRST, SECOND}, DELIM));
+  EXPECT_EQ(EXPECTED, util::string::join({FIRST, SECOND}, DELIM));
 }
 
 TEST_F(StringTest, reverseStrings) {
-  EXPECT_EQ("olleh", snap::string::reverse("hello"));
-  EXPECT_EQ(u8"olleh", snap::string::reverse(u8"hello"));
-  EXPECT_EQ(L"olleh", snap::string::reverse(L"hello"));
+  EXPECT_EQ("olleh", util::string::reverse("hello"));
+  EXPECT_EQ(u8"olleh", util::string::reverse(u8"hello"));
+  EXPECT_EQ(L"olleh", util::string::reverse(L"hello"));
 }
 
 TEST_F(StringTest, translateStrings) {
-  EXPECT_EQ("h1ll2", snap::string::translate("hello", "eolz", "12"));
-  EXPECT_EQ("hello", snap::string::translate("hello", "eolz", ""));
-  EXPECT_EQ("hello", snap::string::translate("hello", "", "12"));
+  EXPECT_EQ("h1ll2", util::string::translate("hello", "eolz", "12"));
+  EXPECT_EQ("hello", util::string::translate("hello", "eolz", ""));
+  EXPECT_EQ("hello", util::string::translate("hello", "", "12"));
 
-  EXPECT_EQ(u8"h1ll2", snap::string::translate(u8"hello", u8"eolz", u8"12"));
-  EXPECT_EQ(u8"hello", snap::string::translate(u8"hello", u8"eolz", u8""));
-  EXPECT_EQ(u8"hello", snap::string::translate(u8"hello", u8"", u8"12"));
+  EXPECT_EQ(u8"h1ll2", util::string::translate(u8"hello", u8"eolz", u8"12"));
+  EXPECT_EQ(u8"hello", util::string::translate(u8"hello", u8"eolz", u8""));
+  EXPECT_EQ(u8"hello", util::string::translate(u8"hello", u8"", u8"12"));
 
-  EXPECT_EQ(L"h1ll2", snap::string::translate(L"hello", L"eolz", L"12"));
-  EXPECT_EQ(L"hello", snap::string::translate(L"hello", L"eolz", L""));
-  EXPECT_EQ(L"hello", snap::string::translate(L"hello", L"", L"12"));
+  EXPECT_EQ(L"h1ll2", util::string::translate(L"hello", L"eolz", L"12"));
+  EXPECT_EQ(L"hello", util::string::translate(L"hello", L"eolz", L""));
+  EXPECT_EQ(L"hello", util::string::translate(L"hello", L"", L"12"));
 }
