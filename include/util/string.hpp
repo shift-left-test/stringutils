@@ -371,6 +371,11 @@ inline T to_const(const T& data) {
 }
 
 template <typename T>
+inline const T* to_const(const T* data) {
+  return data;
+}
+
+template <typename T>
 inline const T * to_const(const std::basic_string<T> &data) {
   return data.c_str();
 }
