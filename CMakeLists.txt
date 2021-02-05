@@ -7,8 +7,6 @@ include(CMakeUtils)
 set_cxx_standard(11)
 set_default_build_type(Release)
 
-enable_static_analysis()
-
 if(ENABLE_TESTS)
   enable_testing()
   enable_test_coverage()
