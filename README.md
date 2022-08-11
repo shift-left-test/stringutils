@@ -1,6 +1,6 @@
-# util
+# stringutils
 
-A simple library which provides a series of utility functions for C++ projects
+A simple library which provides a series of string utility functions for C++ projects
 
 ### Requirements
 
