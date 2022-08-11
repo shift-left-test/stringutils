@@ -543,14 +543,6 @@ TEST_F(StringTest, formatWithArgsForU8String) {
   EXPECT_EQ(EXPECTED, util::string::format(FORMAT, ARG1, ARG2));
 }
 
-TEST_F(StringTest, formatWithArgsForWString) {
-  const wchar_t *FORMAT = L"%S %S";
-  const std::wstring ARG1 = L"hello";
-  const wchar_t *ARG2 = L"world";
-  const wchar_t *EXPECTED = L"hello world";
-  EXPECT_EQ(EXPECTED, util::string::format(FORMAT, ARG1, ARG2));
-}
-
 TEST_F(StringTest, splitForString) {
   const char *TEXT = "hello world";
   const char TOKEN = ' ';
